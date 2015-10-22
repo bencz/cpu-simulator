@@ -1,0 +1,327 @@
+------                                 
+In development:
+------                                                                                         
+              adev - forms'basewincontrol
+                       * theHandle may be $nil
+
+              xdev - general implementation
+                       * implement issue #145                       
+                         - if the method is embeddable and the variable is allocated and returned
+
+              fdev - upndown
+                       * start server / connect to server
+
+             idev - linux
+                       * redirect output to the window
+                       * output window
+
+              sdev - rosetta code samples
+                       * linux : migrate two rosetta samples to linux
+                       * 9 bil names
+                       * 99 Bottles of Beer
+
+------                                 
+Pipeline:
+------                                                                                         
+              xdev - general implementation
+                       * reimplement embeddable constructor
+                       * implementing 2.0.0 issues
+                       * vm console should use startUp symbol
+                       * variable: no need to store nil if the variable statement has initializing part
+                       * constant array
+                       * drop message flag for message ids, messages should be saved in raw data stack frame
+                       * loop should contain snop
+                       * external call: stack should be excluded only if the method is marked as threadsafe
+                       * DFA : replace current hotfix with character terminal with correct solution (probably in DFA should be two different states
+                         one for single constant #10 and another for several constant or literal + constant - #10#13)
+                       * #var l := 100000000000000l / 5000000000000l. warning the expression may be boxed, should in this case do not use primitive operation?
+                       * if more than 11 parameters are passed, open argument list should be used automatically??
+                       * no need to provide exclude command for every external call, special hint to ignore it?
+                       * think over optimized way to get GCXT TLS TABLE, try to cache the pointer
+                       * cast should be called directly, make sure it is always after dispatch
+                       * gui vm client
+                       * handle access vialation exception : exception handler should be called
+                       * should be possible to write  #var(type:vint)Styles := WS_CHILD || BS_AUTORADIOBUTTON. - directly
+                       * review graph sample, get rid of warnings
+                       * constant symbols should be used directly
+                       * should be possible to implement :     #constructor newCompatible &hdc:aCompatible <= new &hdc:(system'external'GDI32 CreateCompatibleDC &hdc:aCompatible).
+                       * refactoring : declareParameterDebugInfo - use debug hint flags
+                       * refactoring : do we need to use paramsReference ditectly??
+                       * refactoring : do we need to use trueReference / falseReference ditectly??
+                       * unboxing : for small objects (~4) use appropriate byte commands
+                       * refactoring : create a single procedure to typecast acc, should be used every time
+                         typecasting required
+    
+              xdev - generic development
+                       * review multi-method implementation in clojure
+                       * forms.onPaint : should it be possible somehow to validate if the action can be used for this type??
+                       * begin / end should be verbs?
+                       * shoud "is" verb always return boolean?
+                       * default dynamic constructor
+                       
+              xdev - byte code optimization                               
+                       * review system_test code : $Console (ControlTest)
+                       * multiple-select if the type of operands are known try to optimize it ; for example of switch value is constant, maybe
+                         better to compare value ?? (if it is true / false constants for example)
+                       * direct parameter allocation can be used for open argument list : e.g. OpenArgTester testParamsCopy &args:1:"a":3
+                       * optimized switch statement implementation (e.g. ordered ??)                       
+                       * optimize !=, <= and >= implementation
+                       * optimize index operation (literal / array) ; indexer should use more optimize algorithm
+                       * compiler should replace and:action / and in virtual statement with
+                         appropriate inline code
+                       * review system for possible byte code optimization                       
+                       * review extensions for possible byte code optimization                       
+                       * review samples for possible byte code optimization                       
+                       * review rosetta samples for possible byte code optimization                       
+                       * review internal core_routines
+                       * optimize primitive operator implementations                       
+                       * review / optimize SDIApplication.start
+                       * call to $super should be direct
+                       * direct operations with int constants e.g. $self create &int:(WS_STYLE1 || WS_STYLE2)
+
+                       * optimize ByteCodeWriter::copyStructure                       
+
+                       * anObject cast:%equal &to:$self bool can be compiled directly in reverse order (BaseValue.equal[1])
+                       * n := n - $self - should be replaced with direct subtract operation if n is of int type and $self is IntNumber                       
+                       * make sure intvar can be passed as int without major overhead (no explicit typecasting)
+                       
+                       * optimize output code: system'BaseFunction2
+                       * if $self/fields are not used - do not store eax
+                       
+              xdev - native code optimization
+                       * optimize field assigning code (5 opcodes, could we make them parallel / get rif of some?)
+                       * optimize hook / unhook commands
+                       * should ret be followed with several nops?
+                       * review bssearch implementation, try to optimize, reduce number of jumps / commands, make them parallel
+                       * review commands, try to optimize, reduce number of jumps / commands, make them parallel
+                       * review commands : use conditional moving
+                       * review core
+                       * starts to use Pentium commands: we need to introduce the mode for
+                         i686 (cmov is not supported for older CPU, so we have to have two
+                         set of commands)
+                       * hook: maybe offset should exclude call command size, so no need
+                         in adjucment
+                       
+             xdev - linux
+                       * create debian package
+                       * port elide to linux
+                       * implement debugger
+                       * port multi-threading
+                       * port elc to linux
+                       * port ecv to linux
+                       * review deployment mechanism
+                       * port elenavm to linux
+                       * port elenasm to linux
+                       * port elt to linux
+                                                                                                                             
+              xdev - multithreading       
+                       * design basic classes / routines to implement multi-threading applications (events, semaphors, locks, threads, ...)
+                       * implement basic functionality
+                       * should the lock field copied as well during the object reallocating? (see core_mt'reallocate)
+                       * threadhandle - remove the object from the reference table on closing
+                       * reference table should be created on the program start for multy thread version
+                       * thread table contains reference to the thread TLS, it looks unsafe if the system reallocate the
+                         storage ; maybe better to store there data duplication? 
+                       * static object should be thread safe
+                       * architecture overview ; tls allocated for every thread and accessed by  FS:[2Ch] ; thread enumeration
+                       * reimplement thread safe variable, safe points, safe regions
+                       * threadhandle - provide safe region like it was in 1.7
+                       * elenavm : support multithreading, either use explicit or implicit TLS allocation
+                       * compile pi with mt
+                       * compile anagram with mt
+                       * port rosetta samples                                                                               
+                       
+               xdev - script engine
+                       * cfparser : there should be two mappings so we could support both local and function variables
+                       * cfparser : methods variable
+                       * support if, foreach, while constructions,
+
+                       * if the script contains only grammar, virtual machine should not be called
+
+                       * implement basic operations with ElenaScript (expression,variable,loop,branching,new class)
+                           - text generating
+                           - construct objects - implement expression, with variables
+                           - using roles
+                           - branching
+                           - branching in code
+                           - assigning values to dynamic objects
+                           - global variables
+                           - script engine support in ELENA code : text generating                           
+
+                       * use script to build objects
+                       * use script to parse
+                       * use script generate code
+                       * current implementation is done in two passes, simplify to one
+                       * redesign cfparser, to use breadth-first model (current one - deep first)
+
+              xdev - test
+                       * test math functions
+                       * test with cyriclic and chinese names (strings, variables, files2)
+                       * test short -> int, int -> short should correctly set sign
+                       * test system'io'StreamWriter
+                       * test system'io'BinarayReader / system'io'BinarayWriter
+                       * test literalOp.trim method
+                       * test vm samples       
+                       * test thread operation                                                                               
+                       * sqlite : test operation with double
+                       * test extension is &nil
+                       
+                       * test bytearray read / write operation with byte, char, int, long, real
+                       * consoleReader.read&Line : test with smaller buffer and longer string (to check how it works for large input)
+                       
+                       * test operation with stack allocated binaray array (write / read / length / getAt)
+                       * make sure exclude command excludes the stack correctly (e.g. any script sample - GC should happends inside
+                         script, so we could check if the caller stack is included correctly)
+
+              xdev - x64
+                      * think over general architecture
+                      * asm2bin64 - compile x64 bit opcodes
+                      * create x64 elena vm
+
+              idev - usability
+                       * fix #83
+                       * it should be possible to turn-off deleting compiled modules if one of the project module fails
+                       * recognize out of memory exception
+                       * error: more accurate error messages
+                       * library explorer: make possible to navigate and disassemble ELENA API
+                       * test compilation with a very long identifier names                       
+                       * class view - make possible to browse the class methods
+
+              idev - generic development                                          
+                       * ide : test with utf8, win1252, ...
+                       * elc : test with utf8, win1252, ...
+                       * linux : debugger
+                       * show the file encoding
+                       * refresh / reload documents after changing encoding ??
+                       * settings / project settings - could we simplify utf-8 <-> utf-16 conversion, maybe settings should store data in
+                         utf-16 for windows?
+                       * chinese (or others two or more UTF8 ) characters should take two columns (similar like tab)
+                       * wintextview : reimplement the cursor locating code if it is not a monofont
+                       * test with small page size intensive insert / delete operations
+                       * test ide: goto error if the file is not opened
+                       
+              idev - unicode
+                       * textview : support chinese symbols - cursor location (chines symbols should take two symbol?)
+                       
+                       * output window
+                       * project compile
+                       * project run
+                       * save last open path (should be saved in the current path??)
+                       * fix outdent / uncomment / trim / eraseLine - some general bug in removing
+                       * menu option - project - forwards
+                       * recent open files / projects
+                       * window list, switching
+                       * status bar
+                       * menu option - view
+                       * menu option - search
+                       * menu option - tools
+                       * menu option - windows
+                       * menu option - help
+                       * add tool bar items
+                       * add hot keys
+                       * enabling / disabling menu options,...
+                       * TextView: cursor blinking
+                       * IDE UI : facelifting, tuning
+                       * test : new project, new file, include, exclude, save, ...
+                       * make sure textview is really deleted when the page is closed
+                       * project clean
+                       
+              idev - debugger
+                       * if an expression raises an exception, debugger should switch into step mode
+                       * show data variables (currently only int / short are displayed)
+                       * fix debugger to correctly show stack allocated objects: custom type (e.g. __win_systemtime)
+                       * get rid of dsProcedureStep, and check mode
+                       * debug script
+                       * implement watch
+                       * show built-in variable $subject
+                       * support thread list
+                       * implement watch
+
+               adev - web support
+                       * http://www.codeproject.com/Articles/452052/Build-Your-Own-Web-Server
+                       * http://www.codeproject.com/Articles/1505/Create-your-own-Web-Server-using-C
+                       
+              adev - gui
+                       * make possible to set / change / get the control color
+                       * make possible to set / change / get the control font                       
+                       * gui stand-alone, gui mt stand-alone
+                       * support default button style
+                       * new controls: check box, status bar, timer, updown, memo, list box
+                       * make sure all windows resources (hbitmap, hdc, ..) are properly released
+                       * example with buttons, edit on panel
+                       * IControl.retrieve&hwnd - probably should always return control?
+                       * a lot of operations with controls should be implemented directly
+                       
+              adev - lib30     
+                       * implement #33 (tcp/ip socket)
+                       * implement sorting for locale
+                       * extensions'text'ReaderEnumerator - currently converts the result into UTF-8, should we have an alternative one?                       
+                       * review http://www.angelfire.com/tx4/cus/notes/smalltalk.html:  add missing implementation for ELENA
+                       * expanding lib30
+                       * make sure all method are safe (raise exceptions if the argument is wrong, the result is wrong, ...)
+                       * review lib30 warnings, try to get rid of most of them
+                       * redesign upper / lower case functionality, make it locale dependant like in c#+                       
+                       * test load class by name
+                       * linux32 : upper / lowe cases
+                       * linux32 : file stream - length, index
+                       * linux32 : implement console clear
+                       * reimplement consolewriter.write&literal - use printf instead of putchar
+                       * migrate rosetta samples
+                       * core : implement INIT_RND
+                       * consoleReader should check if the char is multibyte
+                       * read key
+                       * port console samples                                                                               
+                       
+              adev - lib30 optimization
+                       * reivew system'winforms'SDIApplication.start, optimize the main loop
+                       * review $ConsoleWriter.write&literal[1]
+
+                       * optimize output code: system'Object 
+                       * convertor.toLiteral(1) : better to use classOp.respondsTo(1)?
+                       
+                       * Real#class.new&int[1] - optimize
+                       * ByteArray.fill&index&length&byte
+                       * optimize TextBuffer.indexOf&index&literal&vint
+                       * optimize TextBuffer.indexOf&index&char&vint
+                       * console.writeLine : every time theNewLineConstant is converted to utf16, optimize the performance
+                       * linux : review console operation, optimize the code
+                       
+              sdev - rosetta code samples
+                       * implement
+                       * migrate to linux
+      
+              sdev - samples
+                       * calculator : parse -2+3
+                       * calculator : operations with brackets
+                       * test all samples
+                       * test all rosetta samples
+                       * migrate to linux
+                       * calculator : move lexicalOp to the script
+                       * calculator : gui
+                       * reimplement script samples: interpreter, helloworld, vmconsole
+                       * get rid of reverse command
+                       * migrate calc, interpreter samples
+                       * vmconsole
+                       * notepad: add status bar
+                       * notepad: add open / save
+                       * notepad: show the current cursor position
+                       * notepad: find / replace
+                       * migrate timer
+
+              fdev - upndown
+                       * network game
+                       * implementing
+                       * play with chaotic computer player
+                       * add network players
+
+              fdev - eldoc
+                       * design
+                       * implement basic parsing : only classes
+
+                       * implement
+
+              fdev - evolution
+                       * game of life
+
+              fdev - workshop
+                       * script

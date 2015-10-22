@@ -1,0 +1,25 @@
+#define system.
+#define extensions.
+
+#symbol fibo = (:n)
+[
+    (n < 0)
+        ? [ #throw InvalidArgumentException new &message:"Must be non negative". ].
+ 
+    ^ { eval:n [ ^ (n > 1) ? [ ($self:(n - 2)) + ($self:(n - 1)) ] ! [ n ]. ] }:n.
+].
+
+#symbol program =
+[
+    -1 to:10 &doEach: (:i)
+    [
+        console writeLiteral:"fib(":i:")=".
+        
+        console writeLine:(fibo:i) | if &InvalidArgumentError: e
+            [
+                console writeLine:"invalid".
+            ].
+    ].
+    
+    console readChar.
+].

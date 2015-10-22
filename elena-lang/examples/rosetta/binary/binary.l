@@ -1,0 +1,13 @@
+#define system.
+#define system'routines.
+#define extensions.
+
+// --- Program ---
+
+#symbol program =
+[
+    (5,50,9000) run &each: n
+    [
+        console writeLine:(n toLiteral &base:2).
+    ].
+].

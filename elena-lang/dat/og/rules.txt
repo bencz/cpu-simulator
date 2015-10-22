@@ -1,0 +1,31 @@
+pusha copym aloadsi :=0 => pusha copym nop;
+pusha aloadsi := 0 => pusha nop;
+pushn asavesi := 0 => pusha nop;
+pushn aloadfi asavesi := 0 => nop aloadfi pusha;
+pushn acopyr asavesi := 0 => nop acopyr pusha;
+asavesi := 0 copym aloadsi :=0 => asavesi copym nop;
+acopyb acopyf => nop acopyf;
+acopyb aloadfi => nop aloadfi;
+acopyr aloadfi => nop aloadfi;
+acopyb bcopya => acopyb nop;
+bcopya acopyb => bcopya nop;
+acopyr acopyb => nop acopyb;
+acopyr acopyr => nop acopyr;
+acopyr pusha acopyr => pushr nop acopyr;
+acopyr pusha pushr acopyr => pushr nop pushr acopyr;
+pushr popb => bcopyr nop;
+pushr popa => acopyr nop;
+pushfi popb => bloadfi nop;
+pushfi popa => aloadfi nop;
+pushsi popb => bloadsi nop;
+pushsi popa => aloadsi nop;
+asavesi := 1 aloadsi := 1 => asavesi nop;
+pushfi pop => nop nop;
+pusha popa => nop nop;
+pushb popa => acopyb nop;
+acopyf bcopya newn => bcopyf nop newn;
+
+// m = $self
+open pusha aloadfi := 1 close quitn => nop nop nop nop quitn;
+// m = const
+open pusha acopyr close quitn => nop nop acopyr nop quitn;

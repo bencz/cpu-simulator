@@ -1,0 +1,16 @@
+File operations
+
+
+
+1) fileControl
+
+
+fileControl exists &path:aPath
+                                               
+
+2) fileOp
+
+extends path
+
+
+aPath~path is &available
