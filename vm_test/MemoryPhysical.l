@@ -1,0 +1,94 @@
+#import system.
+#import system'io.
+#import system'routines.
+#import system'collections.
+#import extensions.
+
+#class MemoryPhysical
+{
+    #field allocatedMemory.
+    #field wordReg.
+    
+    #constructor new
+    [
+        allocatedMemory := Dictionary new.
+        wordReg := ByteArray new &int:4.
+    ]
+    
+    #method writeWord : address : word
+    [
+        #var bytes := $self getBytes &value:word.
+        $self writeBytes &buffer:bytes &start:address &offset:0 &size:4.
+    ]
+    
+    #method readWord : address
+    [
+        $self readBytes &buffer:wordReg &start:address &offset:0 &size:4.
+        ^($self getbits &value:wordReg &size:4).
+    ]
+   
+    #method writeByte : address : byte
+    [
+        #var block := address and: 0FFFFF000h.
+        #var blk := allocatedMemory@block.
+        ($nil == blk) 
+            ? [ allocatedMemory@block := vm'MemoryBlock new. ].
+        (allocatedMemory@block)@address := byte.
+    ]
+    
+    #method readByte : address
+    [
+        #var block := address and: 0FFFFF000h.
+        #var blk := allocatedMemory@block.
+        ($nil == blk) ? [ ^0FFh. ].
+        ^(allocatedMemory@block)@address.
+    ]
+    
+    #method readBytes &buffer:aBuf &start:aStart &offset:aOffset &size:aSize
+    [
+        #var i := 0.
+        #loop (i<aSize) ?
+        [
+            aBuf@i := $self readByte:(aStart+i).
+            i := i+1.
+        ].
+    ]
+
+    #method writeBytes &buffer:aBuf &start:aStart &offset:aOffset &size:aSize
+    [
+        #var i := 0.
+        #loop (i<aSize) ?
+        [
+            $self writeByte:(aStart + i):(aBuf@i).
+            i := i+1.
+        ].
+    ]
+    
+    // --------    
+    #method getbits &value:aValue &size:aSize
+    [
+        #var rtl := 0l.
+        #var i := aSize - 1.
+        #loop (i >= 0) ?
+        [
+            rtl := rtl shift &index:(-8).
+            rtl := rtl or: (aValue@i).
+            i := i - 1.
+        ].
+        ^rtl. 
+    ]
+    
+    #method getBytes &value:aValue
+    [
+        #var i := 3.
+        #var rtl := ByteArray new &int:4.
+        #var(type:byte) a := 0.
+        #loop (i >= 0)?
+        [
+            a := (aValue shift &index:(8*i)) and: 0FFh.
+            rtl@i := a.
+            i := i - 1.
+        ].
+        ^rtl.
+    ]
+}
