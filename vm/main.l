@@ -4,7 +4,6 @@
 
 #symbol $loadBytes = aProgram 
 [
-    #var i := 0.
     #var(type:vbyte) byte := 0.
     #var br := BinaryFileReader new &path:aProgram.   
     #var bta := List new.
@@ -12,7 +11,6 @@
     [
         br read &vbyte:byte.
         bta += byte.
-        i := i + 1.
     ].
     br close.  
     ^bta. 
