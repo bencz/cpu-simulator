@@ -29,4 +29,5 @@
     #var coisa := mem readWord:0.
     mem writeWord:0:0000ffbfh.
     console writeLine:(mem readWord:70).
+
 ].

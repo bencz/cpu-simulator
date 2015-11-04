@@ -20,4 +20,5 @@ instructions\InstructionCc.l
 instructions\InstructionXor.l
 MemoryPhysical.l
 MemoryBlock.l
+MemoryVirtual.l
 

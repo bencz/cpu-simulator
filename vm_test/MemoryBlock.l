@@ -1,8 +1,5 @@
 #import system.
-#import system'io.
-#import system'routines.
 #import system'collections.
-#import extensions.
 
 #class MemoryBlock
 {
