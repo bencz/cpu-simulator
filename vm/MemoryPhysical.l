@@ -12,10 +12,10 @@
         wordReg := ByteArray new &int:4.
     ]
     
-    #method writeWord : address : word
+    #method writeWord &address:aAddress &word:aWord
     [
-        #var bytes := $self getBytes &value:word.
-        $self writeBytes &buffer:bytes &start:address &offset:0 &size:4.
+        #var bytes := $self getBytes &value:aWord.
+        $self writeBytes &buffer:bytes &start:aAddress &offset:0 &size:4.
     ]
     
     #method readWord : address
@@ -24,13 +24,13 @@
         ^($self getbits &value:wordReg &size:4).
     ]
    
-    #method writeByte : address : byte
+    #method writeByte  &address:aAddress &byt:aByte
     [
-        #var block := address and: 0FFFFF000h.
+        #var block := aAddress and: 0FFFFF000h.
         #var blk := allocatedMemory@block.
         ($nil == blk) 
             ? [ allocatedMemory@block := vm'MemoryBlock new. ].
-        (allocatedMemory@block)@address := byte.
+        (allocatedMemory@block)@aAddress := aByte.
     ]
     
     #method readByte : address
@@ -56,7 +56,7 @@
         #var i := 0.
         #loop (i<aSize) ?
         [
-            $self writeByte:(aStart + i):(aBuf@i).
+            $self writeByte &address:(aStart + i) &byt:(aBuf@i).
             i := i+1.
         ].
     ]

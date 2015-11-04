@@ -3,22 +3,24 @@
 #import system'collections.
 #import extensions.
 
-#symbol(const, type:int) R_PC = 0.
-
 #class Cpu
 {
-    #field memory.
-    #field registers.
+    #field physicalMemory.
+    #field registersSupervisor.
+    #field registersUser.
     #field halted.
     #field speed.
     #field instructions.
+    #field controlRegister.
     
     #constructor new
     [
-        memory := vm'Memory new &size:500.
-        registers := vm'Registers new &numberOfRegisters:10.
+        physicalMemory := vm'MemoryPhysical new.
         instructions := Dictionary new.
+        registersUser := ByteArray new &int:16.
+        registersSupervisor := ByteArray new &int:16.
         
+        controlRegister := 0.
         halted := false.
         speed := 100000.
         
@@ -37,7 +39,7 @@
         #var i := 0.
         #loop (i < aProgram length) ?
         [
-            memory writeByte &address:i &bt:(aProgram@i). 
+            physicalMemory writeByte &address:i &byt:(aProgram@i). 
             i := i + 1.
         ].
     ]

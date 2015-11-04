@@ -11,10 +11,11 @@ warn:unresolved=-1
 
 [files]
 main.l
-Emulator\registers.l
-Emulator\opcode.l
-Emulator\flags.l
-Memory\stack.l
-Emulator\emulator.l
-Memory\memoryblock.l
+cpu.l
+instructions\InstructionAdd.l
+instructions\InstructionCc.l
+instructions\InstructionXor.l
+MemoryPhysical.l
+MemoryBlock.l
+MemoryVirtual.l
 
