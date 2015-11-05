@@ -1,4 +1,4 @@
-#class InstructionXor
+#class InstructionNop
 {
 	#constructor new []
 
