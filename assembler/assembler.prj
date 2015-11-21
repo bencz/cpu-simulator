@@ -13,4 +13,5 @@ warn:unresolved=-1
 [files]
 main.l
 lexer.l
+Tokens\tokenIntLiteral.l
 

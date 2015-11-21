@@ -14,4 +14,9 @@
     #method decodeInstruction &instruction:aIns &ref:aReg
     [
     ]
+    
+    #method decodeInstruction &instruction:aIns &vshort:aReg
+    [
+        aReg << 1.
+    ]
 }

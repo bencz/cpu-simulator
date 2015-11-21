@@ -79,7 +79,7 @@
                    
             ((skipThis == false) and: ($isDigit:($self peekChar)))?
             [
-                $self scanIntLiteral.
+                tokenList += ($self scanIntLiteral).
                 skipThis := true.
             ].
             
@@ -147,8 +147,8 @@
                 [
                     accum := accum + ($self readChar) literal.
                 ].
+                ^(assembler'Tokens'TokenIntLiteral new &value:(accum toLong) &line:lineNumber).
               ].
-        
     ]
     
     #method scanHexNumber
