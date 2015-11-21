@@ -41,6 +41,12 @@
     ^(((c >= 41h) and: (c <= 5Ah)) or: ((c >= 61h) and: (c <= 7Ah))).
 ].
 
+#symbol $isLetterOrDigit = ch
+[
+    #var c := ch toInt.
+    ^(($isLetter:c) or: ($isDigit:c) or: (c == 5Fh)).
+].
+
 #symbol $htoi = hexString
 [
     #var i := 0.
@@ -97,6 +103,7 @@
                     lineNumber := lineNumber + 1.
                 ].
                 skipThis := true.
+                tokenList += (assembler'Tokens'TokenEOL new &line:lineNumber).
             ].
                    
             ((skipThis == false) and: ($isDigit:($self peekChar)))?
@@ -107,6 +114,7 @@
             
             ((skipThis == false) and: (($self peekChar toInt) == 022h)) ? // 0x22 == '\"'
             [
+                tokenList += ($self scanStringLiteral).
                 skipThis := true.
             ].
             
@@ -118,6 +126,7 @@
             
             ((skipThis == false) and: ($isLetter:($self peekChar)) or: (($self peekChar toInt) == 2Eh)) ? // 0x2E == '.'
             [
+                tokenList += ($self scanIdentifier).
                 skipThis := true.
             ].
             
@@ -188,5 +197,27 @@
         ].
         #var tmp := $htoi:accum.
         ^(assembler'Tokens'TokenIntLiteral new &value:(tmp toLong) &line:lineNumber).
+    ]
+    
+    #method scanStringLiteral
+    [
+        $self readChar.
+        #var accum := "".
+        #loop (($self peekChar toInt != 022h) and: ($self peekChar != -1)) ?
+        [
+            accum := accum + $self readChar.
+        ].
+        $self readChar.
+        ^(assembler'Tokens'TokenStringLiteral new &value:accum &line:lineNumber).
+    ]
+    
+    #method scanIdentifier
+    [
+        #var accum := "".
+        accum := accum + $self readChar.
+        
+        #loop ($isLetterOrDigit:($self peekChar))
+            ? [ accum := accum + $self readChar. ].
+        ^(assembler'Tokens'TokenIdentifier new &name:accum &line:lineNumber).
     ]
 }

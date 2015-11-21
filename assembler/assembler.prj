@@ -14,4 +14,7 @@ warn:unresolved=-1
 main.l
 lexer.l
 Tokens\tokenIntLiteral.l
+Tokens\tokenEOL.l
+Tokens\tokenStringLiteral.l
+Tokens\tokenIdentifier.l
 
