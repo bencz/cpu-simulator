@@ -33,20 +33,30 @@
     
     #method setOpcodes
     [
-        instructions@01h := vm'instructions'InstructionNop new.
-        instructions@02h := vm'instructions'InstructionAnd new.
-        instructions@03h := vm'instructions'InstructionOr new.
-        instructions@04h := vm'instructions'InstructionNot new.
-        instructions@05h := vm'instructions'InstructionNand new.
-        instructions@06h := vm'instructions'InstructionNor new.
-        instructions@07h := vm'instructions'InstructionXor new.
-        instructions@08h := vm'instructions'InstructionXnor new.
-        instructions@09h := vm'instructions'InstructionAdd new.
-        instructions@0Ah := vm'instructions'InstructionSub new.
-        instructions@0Bh := vm'instructions'InstructionMul new.
-        instructions@0Ch := vm'instructions'InstructionDiv new.
-        instructions@0Dh := vm'instructions'InstructionLsht new.
-        instructions@0Eh := vm'instructions'InstructionRsht new.
+        instructions@00h := vm'instructions'InstructionAddi new.
+        instructions@80h := vm'instructions'InstructionAdd new.
+//        instructions@81h := vm'instructions'InstructionAdc new.
+//        instructions@82h := vm'instructions'InstructionAddu new.
+//        instructions@83h := vm'instructions'InstructionSub new.
+//        instructions@03h := vm'instructions'InstructionSubi new.
+//        instructions@84h := vm'instructions'InstructionSbc new.
+//        instructions@85h := vm'instructions'InstructionSubu new.
+//        instructions@86h := vm'instructions'InstructionMul new.
+//        instructions@88h := vm'instructions'InstructionDiv new.
+//        instructions@59h := vm'instructions'InstructionBr new.
+//        instructions@5Ah := vm'instructions'InstructionBl new.
+//        instructions@91h := vm'instructions'InstructionOr new.
+//        instructions@14h := vm'instructions'InstructionLi new.
+//        instructions@15h := vm'instructions'InstructionLb new.
+//        instructions@16h := vm'instructions'InstructionLw new.
+//        instructions@17h := vm'instructions'InstructionSb new.
+//        instructions@18h := vm'instructions'InstructionSw new.
+//        instructions@9Bh := vm'instructions'InstructionCmp new.
+//        instructions@1Bh := vm'instructions'InstructionCmpi new.
+//        instructions@21h := vm'instructions'InstructionPush new.
+//        instructions@22h := vm'instructions'InstructionPop new.
+//        instructions@0Eh := vm'instructions'InstructionSli new.
+//        instructions@0Fh := vm'instructions'InstructionSri new.
     ]
     
     #method loadProgram : aProgram

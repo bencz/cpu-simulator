@@ -1,5 +1,6 @@
 ﻿[project]
 executable=assembler.exe
+arguments=-o out.bin test.asm
 output=obj
 namespace=assembler
 template=console
@@ -11,4 +12,5 @@ warn:unresolved=-1
 
 [files]
 main.l
+lexer.l
 

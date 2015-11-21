@@ -17,17 +17,7 @@ MemoryBlock.l
 MemoryVirtual.l
 InstructionHelper.l
 instructions\InstructionAdd.l
+instructions\InstructionAddi.l
 instructions\InstructionAnd.l
-instructions\InstructionDiv.l
-instructions\InstructionLsht.l
-instructions\InstructionMul.l
-instructions\InstructionNand.l
-instructions\InstructionNop.l
-instructions\InstructionNor.l
-instructions\InstructionNot.l
-instructions\InstructionOr.l
-instructions\InstructionRsht.l
-instructions\InstructionSub.l
-instructions\InstructionXnor.l
-instructions\InstructionXor.l
+
 
