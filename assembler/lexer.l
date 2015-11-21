@@ -41,6 +41,28 @@
     ^(((c >= 41h) and: (c <= 5Ah)) or: ((c >= 61h) and: (c <= 7Ah))).
 ].
 
+#symbol $htoi = hexString
+[
+    #var i := 0.
+    #var(type:int) ret := 0.
+    #var tmp := 0.
+    
+    #loop (i < hexString length) ?
+    [
+        #var c := hexString@i toInt.
+        ((c >= 65) and: (c <= 70))
+            ? [ tmp := c - 65 + 10. ].              
+        ((c >= 97) and: (c <= 102)) 
+            ? [ tmp := c - 97 + 10. ].
+        ($isDigit:c)
+            ? [ tmp := c - 30. ].
+            
+        ret := 16 * ret + tmp.
+        i := i + 1.
+    ].
+    ^ret.
+].
+
 #class Lexer
 {
     #field lineNumber.
@@ -164,5 +186,7 @@
         [
             accum := accum + ($self readChar) literal.
         ].
+        #var tmp := $htoi:accum.
+        ^(assembler'Tokens'TokenIntLiteral new &value:(tmp toLong) &line:lineNumber).
     ]
 }
