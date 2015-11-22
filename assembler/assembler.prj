@@ -23,4 +23,5 @@ Tokens\tokenIndirectRegister.l
 Tokens\tokenComma.l
 Tokens\tokenHash.l
 Tokens\tokenColon.l
+parser.l
 

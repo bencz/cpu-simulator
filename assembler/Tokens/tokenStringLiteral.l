@@ -1,3 +1,5 @@
+#import system.
+
 #class TokenStringLiteral
 {
     #field line.
@@ -11,6 +13,6 @@
     
     #method literal
     [
-        ^(value).
+        ^(value literal).
     ]
 }

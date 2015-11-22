@@ -1,0 +1,5 @@
+#import system.
+
+#class Parser
+{
+}

@@ -77,6 +77,8 @@
     #field position.
     #field tokenList.
     
+    #method getList = tokenList.
+    
     #constructor new &sourceFile:aSource
     [
         sourceFile := aSource.
@@ -133,14 +135,14 @@
             
             (skipThis == false) ?
             [
+                //#var auxChar := ($self peekChar literal) length.
                 ($self peekChar literal) =>
                     "%" ? [ tokenList += ($self scanRegister). ]
                     "@" ? [ tokenList += ($self scanIndirectRegister). ]
-                    "," ? [ tokenList += (assembler'Tokens'TokenComma new &line:lineNumber). ]
-                    "#" ? [ tokenList += (assembler'Tokens'TokenHash new &line:lineNumber). ]
-                    ":" ? [ tokenList += (assembler'Tokens'TokenColon new &line:lineNumber). ].
+                    "," ? [ $self readChar. tokenList += (assembler'Tokens'TokenComma new &line:lineNumber). ]
+                    "#" ? [ $self readChar. tokenList += (assembler'Tokens'TokenHash new &line:lineNumber). ]
+                    ":" ? [ $self readChar. tokenList += (assembler'Tokens'TokenColon new &line:lineNumber). ].
             ].
-            $self readChar.
         ].
     ]
     

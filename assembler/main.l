@@ -24,4 +24,9 @@
 
     #var lexer := assembler'Lexer new &sourceFile:source.
     lexer scan.
+    
+    (lexer getList) run &each: element
+    [
+        #var tt := element.
+    ].
 ].

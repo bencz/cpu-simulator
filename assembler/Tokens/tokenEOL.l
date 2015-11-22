@@ -1,3 +1,5 @@
+#import system.
+
 #class TokenEOL
 {
     #field line.
