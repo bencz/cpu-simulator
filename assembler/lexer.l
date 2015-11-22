@@ -2,9 +2,10 @@
 #import system'routines.
 #import system'collections.
 #import system'io.
-#define extensions.
-#define extensions'routines.
-#define extensions'text.
+#import extensions.
+#import extensions'routines.
+#import extensions'text.
+#import system'culture.
 
 #symbol(const,type:int) LF  = 0Ah.
 #symbol(const,type:int) TAB = 09h.
@@ -132,12 +133,12 @@
             
             (skipThis == false) ?
             [
-                /*($self peekChar) =>
-                    "%" ? []
-                    "@" ? []
-                    "," ? []
-                    "#" ? []
-                    ":" ? [].*/
+                ($self peekChar literal) =>
+                    "%" ? [ tokenList += ($self scanRegister). ]
+                    "@" ? [ tokenList += ($self scanIndirectRegister). ]
+                    "," ? [ tokenList += (assembler'Tokens'TokenComma new &line:lineNumber). ]
+                    "#" ? [ tokenList += (assembler'Tokens'TokenHash new &line:lineNumber). ]
+                    ":" ? [ tokenList += (assembler'Tokens'TokenColon new &line:lineNumber). ].
             ].
             $self readChar.
         ].
@@ -163,6 +164,9 @@
             ? [ ret := sourceFile@(position). position := position + 1. ].
         ^ret.        
     ]
+    
+    
+    // --- Assembler analises...
     
     #method scanIntLiteral
     [
@@ -219,5 +223,81 @@
         #loop ($isLetterOrDigit:($self peekChar))
             ? [ accum := accum + $self readChar. ].
         ^(assembler'Tokens'TokenIdentifier new &name:accum &line:lineNumber).
+    ]
+    
+    #method scanRegister
+    [
+        $self readChar.
+        #var accum := "".
+        
+        #var auxChar := $nil.
+        #loop (($isLetterOrDigit:($self peekChar)) and: ($self peekChar != -1)) ?
+        [
+            accum := accum + $self readChar.
+        ].
+        
+        
+        #var(type:int) accumSize := accum length.
+        #var regNumber := accum Substring &int:1 &int:accumSize.
+        #var i := 1.
+        #var isDigit := true.
+        #loop ((i < regNumber length) and: isDigit) ?
+        [
+            isDigit := $isDigit:(regNumber@i).
+            i := i + 1.
+        ].
+        
+        #var register := (regNumber trimRight) toInt.        
+        #var tmpReg := (accum@0 literal) toLower &locale:currentLocale.
+        (((tmpReg != "r") or: (tmpReg != "s") or: (tmpReg != "d") == false) or: (register > 15))
+            ? [
+                console writeLine:("Register, " + accum + ", not valid, in line: " + ((lineNumber + 1) literal)). 
+              ].
+                   
+        (tmpReg == "s") 
+            ? [ register := register + 16. ].
+        (tmpReg == "d")
+            ? [ register := register + 32. ].
+            
+        ^(assembler'Tokens'TokenRegister new &register:register &line:lineNumber).
+    ]
+    
+    #method scanIndirectRegister
+    [
+        $self readChar.
+        #var accum := "".
+        
+        #var auxChar := $nil.
+        #loop (($isLetterOrDigit:($self peekChar)) and: ($self peekChar != -1)) ?
+        [
+            accum := accum + $self readChar.
+        ].
+        
+        
+        #var(type:int) accumSize := accum length.
+        #var regNumber := accum Substring &int:1 &int:accumSize.
+        #var i := 1.
+        #var isDigit := true.
+        #loop ((i < regNumber length) and: isDigit) ?
+        [
+            isDigit := $isDigit:(regNumber@i).
+            i := i + 1.
+        ].
+        
+        #var register := (regNumber trimRight) toInt.        
+        #var tmpReg := (accum@0 literal) toLower &locale:currentLocale.
+        (((tmpReg != "r") or: (tmpReg != "s") or: (tmpReg != "d") == false) or: (register > 15))
+            ? [
+                console writeLine:("Register, " + accum + ", not valid, in line: " + ((lineNumber + 1) literal)). 
+              ].
+              
+        ($self peekChar literal == ":")
+        ? [
+            $self readChar.
+            #var il := $self scanIntLiteral.
+            ^(assembler'Tokens'TokenIndirectRegister new &register:register &offset:(il getValue) &line:lineNumber).
+          ]
+        ! [ ^(assembler'Tokens'TokenIndirectRegister new &register:register &line:lineNumber). ].
+          
     ]
 }

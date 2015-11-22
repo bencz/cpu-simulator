@@ -13,4 +13,6 @@
     [
         ^(value literal).
     ]
+    
+    #method getValue = value.
 }
