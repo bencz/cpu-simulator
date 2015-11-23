@@ -1,6 +1,6 @@
 #import system.
 
-#class InstructionAdd
+#class InstructionSubi
 {
 	#constructor new []
 
@@ -8,17 +8,16 @@
     [
         #var(type:bytearray,size:8)dump.
         #var(type:byte)register1.
-        #var(type:byte)register2.
         #var(type:byte)destRegister.
+        #var(type:short)op2.
         
         destRegister := ((aInstruction shift &index:08) and: 00Fh).
         register1    := ((aInstruction shift &index:12) and: 00Fh).
-        register2    := ((aInstruction shift &index:16) and: 00Fh).
+        op2          := ((aInstruction shift &index:16) and: 0FFFFh).
         
-        #var op1 := aVm getRegister:register1.
-        #var op2 := aVm getRegister:register2.
-        #var flags := aVm getRegister:12.
-        #var result := op1 + op2.
+        #var flags  := aVm getRegister:12.
+        #var op1    := aVm getRegister:(register1).
+        #var result := op1 - op2.
         
         flags := flags and: (vm'Flags Carry not).
         flags := flags and: (vm'Flags Overflow not).
@@ -29,6 +28,6 @@
             ! [ flags := flags and: ((vm'Flags Zero) not). ].
             
         aVm setRegister &register:destRegister &value:result.
-        aVm setRegister &register:12 &value:flags.   
+        aVm setRegister &register:12 &value:flags.        
     ]
 }

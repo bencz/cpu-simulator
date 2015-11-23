@@ -20,4 +20,8 @@ instructions\instructionAdd.l
 instructions\instructionAddi.l
 instructions\instructionAnd.l
 instructions\instructionLi.l
+instructions\instructionSub.l
+instructions\instructionSubi.l
+instructions\instructionMul.l
+instructions\iInstructionDiv.l
 

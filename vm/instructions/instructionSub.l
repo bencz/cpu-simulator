@@ -1,6 +1,6 @@
 #import system.
 
-#class InstructionAdd
+#class InstructionSub
 {
 	#constructor new []
 
@@ -18,7 +18,7 @@
         #var op1 := aVm getRegister:register1.
         #var op2 := aVm getRegister:register2.
         #var flags := aVm getRegister:12.
-        #var result := op1 + op2.
+        #var result := op1 - op2.
         
         flags := flags and: (vm'Flags Carry not).
         flags := flags and: (vm'Flags Overflow not).
