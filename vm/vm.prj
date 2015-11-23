@@ -1,4 +1,4 @@
-﻿[project]
+[project]
 executable=vm.exe
 output=obj
 namespace=vm
@@ -16,6 +16,7 @@ memoryPhysical.l
 memoryBlock.l
 memoryVirtual.l
 flags.l
+conditionCode.l
 instructions\instructionAdd.l
 instructions\instructionAddi.l
 instructions\instructionAnd.l
@@ -23,9 +24,15 @@ instructions\instructionLi.l
 instructions\instructionSub.l
 instructions\instructionSubi.l
 instructions\instructionMul.l
-instructions\iInstructionDiv.l
+instructions\instructionDiv.l
 instructions\instructionOr.l
-conditionCode.l
 instructions\instructionBr.l
 instructions\instructionBl.l
+instructions\instructionLb.l
+instructions\instructionLw.l
+instructions\instructionSb.l
+instructions\instructionSw.l
+instructions\instructionCmp.l
+instructions\instructionCmpi.l
+instructions\instructionPush.l
 
