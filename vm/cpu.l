@@ -54,9 +54,9 @@
         instructions@9Bh := vm'instructions'InstructionCmp new.
         instructions@1Bh := vm'instructions'InstructionCmpi new.
         instructions@21h := vm'instructions'InstructionPush new.
-//        instructions@22h := vm'instructions'InstructionPop new.
-//        instructions@0Eh := vm'instructions'InstructionSli new.
-//        instructions@0Fh := vm'instructions'InstructionSri new.
+        instructions@22h := vm'instructions'InstructionPop new.
+        instructions@0Eh := vm'instructions'InstructionSli new.
+        instructions@0Fh := vm'instructions'InstructionSri new.
     ]
     
     #method loadProgram : aProgram
