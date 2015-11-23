@@ -1,0 +1,26 @@
+#import system.
+#import system'io.
+#import system'collections.
+
+#symbol $loadBytes = aProgram 
+[
+    #var(type:vbyte) byte := 0.
+    #var br := BinaryFileReader new &path:aProgram.   
+    #var bta := List new.
+    #loop (br available) ?
+    [
+        br read &vbyte:byte.
+        bta += byte.
+    ].
+    br close.  
+    ^bta. 
+].
+
+#symbol program =
+[      
+    #var xx := vm'Flags Carry.
+
+    #var cpu := vm'Cpu new.
+    cpu loadProgram : ($loadBytes:"test.bin").
+    cpu emulate.
+].
