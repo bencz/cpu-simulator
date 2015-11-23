@@ -21,8 +21,8 @@
     [
         physicalMemory := vm'MemoryPhysical new.
         instructions := Dictionary new.
-        registersUser := ByteArray new &int:16.
-        registersSupervisor := ByteArray new &int:16.
+        registersUser := IntArray new &int:16.
+        registersSupervisor := IntArray new &int:16.
         
         controlRegister := 0.
         halted := false.
@@ -35,6 +35,7 @@
     [
         instructions@00h := vm'instructions'InstructionAddi new.
         instructions@80h := vm'instructions'InstructionAdd new.
+        instructions@14h := vm'instructions'InstructionLi new.
 //        instructions@81h := vm'instructions'InstructionAdc new.
 //        instructions@82h := vm'instructions'InstructionAddu new.
 //        instructions@83h := vm'instructions'InstructionSub new.
@@ -119,7 +120,7 @@
         #var inst := instructions@opcode.
         ($nil != inst)?
             [ 
-                inst interpret &vm:($self).
+                inst interpret &ins:instruction &vm:($self).
                 lRet := true.
             ].
         ^lRet.

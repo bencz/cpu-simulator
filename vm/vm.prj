@@ -1,4 +1,4 @@
-[project]
+﻿[project]
 executable=vm.exe
 output=obj
 namespace=vm
@@ -19,5 +19,5 @@ InstructionHelper.l
 instructions\InstructionAdd.l
 instructions\InstructionAddi.l
 instructions\InstructionAnd.l
-
+instructions\InstructionLi.l
 

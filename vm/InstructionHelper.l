@@ -1,14 +1,18 @@
 #import system.
+#import system'collections.
+#import extensions.
 
-#class InstructionHelper
+#class(extension) InstructionHelper
 {
-    #constructor new []
+    //constructor new []
     
-    #method decodeInstruction &instruction:aIns &ref:aReg1 &ref:aReg2 &ref:aReg3
+    #method decodeInstruction &instruction:aIns
     [
-        aReg1 << (aIns shift &index:08) and: 00Fh.
-        aReg2 << (aIns shift &index:12) and: 00Fh.
-        aReg3 << (aIns shift &index:16) and: 00Fh.
+        #var ret := Array new &length:3.
+        ret@0 := (aIns shift &index:08) and: 00Fh.
+        ret@1 := (aIns shift &index:12) and: 00Fh.
+        ret@2 := (aIns shift &index:16) and: 00Fh.
+        ^ret.
     ]
     
     #method decodeInstruction &instruction:aIns &ref:aReg
@@ -18,5 +22,13 @@
     #method decodeInstruction &instruction:aIns &vshort:aReg
     [
         aReg << 1.
+    ]
+    
+    #method decondeInstructionDataShort &instruction:aIns
+    [
+        #var ret := Array new &length:2.
+        ret@0 := ((aIns shift &index:08) and: 00Fh).
+        ret@1 := ((aIns shift &index:16) and: 0FFFFh).
+        ^ret.
     ]
 }
