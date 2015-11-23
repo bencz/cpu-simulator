@@ -21,7 +21,10 @@
             (vm'ConditionCode Carry)
                 ? [ shouldJump := (flags and: (vm'Flags Carry) != 0). ]
                 
-            ((vm'ConditionCode Zero) or: (vm'ConditionCode Equal))
+            (vm'ConditionCode Zero)
+                ? [ shouldJump := (flags and: (vm'Flags Zero) != 0). ]
+                
+            (vm'ConditionCode Equal)
                 ? [ shouldJump := (flags and: (vm'Flags Zero) != 0). ]
                 
             (vm'ConditionCode NotEqual)
@@ -33,7 +36,10 @@
             (vm'ConditionCode GreaterThanOrEqual)
                 ? [ shouldJump := (flags and: ((vm'Flags Sign) == 0) or: (flags and: (vm'Flags Zero) != 0)). ]
                 
-            ((vm'ConditionCode Sign) or: (vm'ConditionCode LessThan))
+            (vm'ConditionCode Sign)
+                ? [ shouldJump := (flags and: (vm'Flags Zero) != 0). ]
+                
+            (vm'ConditionCode LessThan)
                 ? [ shouldJump := (flags and: (vm'Flags Zero) != 0). ]
                 
             (vm'ConditionCode LessThanOrEqual)

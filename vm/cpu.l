@@ -114,7 +114,7 @@
     
     #method decodeInstruction : instruction
     [
-        console writeLine:(instruction toLiteral &base:16).
+        //console writeLine:(instruction toLiteral &base:16).
         
         #var lRet := false.
         #var opcode := instruction and: 0FFh.

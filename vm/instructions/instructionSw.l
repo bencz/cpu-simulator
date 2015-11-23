@@ -15,6 +15,6 @@
         destinationOffset   := ((aInstruction shift &index:16) and: 0FFFFh).
         
         #var address := (aVm getRegister:destinationRegister) + destinationOffset.
-        (aVm getMemory) writeWord &address:address &byt:((aVm getRegister:sourceRegister) and: 0FFh).
+        (aVm getMemory) writeWord &address:address &byt:((aVm getRegister:sourceRegister)).
     ]
 }
