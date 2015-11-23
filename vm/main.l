@@ -18,8 +18,6 @@
 
 #symbol program =
 [      
-    #var xx := vm'Flags Carry.
-
     #var cpu := vm'Cpu new.
     cpu loadProgram : ($loadBytes:"test.bin").
     cpu emulate.

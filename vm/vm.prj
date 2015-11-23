@@ -24,4 +24,8 @@ instructions\instructionSub.l
 instructions\instructionSubi.l
 instructions\instructionMul.l
 instructions\iInstructionDiv.l
+instructions\instructionOr.l
+conditionCode.l
+instructions\instructionBr.l
+instructions\instructionBl.l
 

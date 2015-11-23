@@ -7,22 +7,20 @@
 
 	#method interpret &ins:aInstruction &vm:aVm
     [
-        /*#var destRegister := ByteNumber new.
-        #var data := ShortNumber new.
+        #var(type:byte) destRegister.
+        #var(type:short) data.
         
-        #var ret := vm'InstructionHelper decondeInstructionDataShort &instruction:aInstruction.
+        destRegister := ((aInstruction shift &index:08) and: 00Fh).
+        data         := ((aInstruction shift &index:16) and: 0FFFFh).
         
-        destRegister := (ret@0) byte.
-        data := (ret@1) short.*/
-        
-        #var(type:bytearray,size:8)dump.
+        /*#var(type:bytearray,size:8)dump.
         #var(type:byte)destRegister.
         #var(type:short)data.
         
         dump write &int:0 &long:(aInstruction long).        
         
         dump read &int:1 &vbyte:destRegister.
-        dump read &int:2 &vshort:data.
+        dump read &int:2 &vshort:data.*/
         
         aVm setRegister &register:destRegister &value:data.
     ]

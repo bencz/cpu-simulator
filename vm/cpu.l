@@ -43,9 +43,9 @@
 //        instructions@85h := vm'instructions'InstructionSubu new.
         instructions@86h := vm'instructions'InstructionMul new.
         instructions@88h := vm'instructions'InstructionDiv new.
-//        instructions@59h := vm'instructions'InstructionBr new.
-//        instructions@5Ah := vm'instructions'InstructionBl new.
-//        instructions@91h := vm'instructions'InstructionOr new.
+        instructions@59h := vm'instructions'InstructionBr new.
+        instructions@5Ah := vm'instructions'InstructionBl new.
+        instructions@91h := vm'instructions'InstructionOr new.
         instructions@14h := vm'instructions'InstructionLi new.
 //        instructions@15h := vm'instructions'InstructionLb new.
 //        instructions@16h := vm'instructions'InstructionLw new.
@@ -98,7 +98,7 @@
         #loop ((i < (speed / 100)) and: (halted != true))?
         [
             //instruction := $self fetchInstruction.
-            //$self decodeInstruction:instruction.
+            //halted := $self decodeInstruction:instruction.
             halted := $self decodeInstruction:($self fetchInstruction) not.
             i := i + 1.
         ].
@@ -114,6 +114,8 @@
     
     #method decodeInstruction : instruction
     [
+        console writeLine:(instruction toLiteral &base:16).
+        
         #var lRet := false.
         #var opcode := instruction and: 0FFh.
         #var inst := instructions@opcode.

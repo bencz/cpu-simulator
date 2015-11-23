@@ -1,6 +1,6 @@
 #import system.
 
-#class InstructionDiv
+#class InstructionOr
 {
 	#constructor new []
 
@@ -17,17 +17,8 @@
         #var op1 := aVm getRegister:register1.
         #var op2 := aVm getRegister:register2.
         #var flags := aVm getRegister:12.
-        #var result := op1 / op2.
-        
-        flags := flags and: (vm'Flags Carry not).
-        flags := flags and: (vm'Flags Overflow not).
-        flags := flags and: (vm'Flags Sign not).
-        
-        (result == 0)
-            ? [ flags := flags or: (vm'Flags Zero). ]
-            ! [ flags := flags and: ((vm'Flags Zero) not). ].
-            
+        #var result := op1 or: op2.
+
         aVm setRegister &register:destRegister &value:result.
-        aVm setRegister &register:12 &value:flags.   
     ]
 }

@@ -6,7 +6,6 @@
 
 	#method interpret &ins:aInstruction &vm:aVm
     [
-        #var(type:bytearray,size:8)dump.
         #var(type:byte)register1.
         #var(type:byte)register2.
         #var(type:byte)destRegister.
