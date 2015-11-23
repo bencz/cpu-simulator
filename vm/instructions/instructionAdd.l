@@ -11,11 +11,24 @@
         #var(type:byte)register2.
         #var(type:byte)destRegister.
         
-        dump write &int:0 &long:(aInstruction long).
-        dump read &int:1 &vbyte:register1.
-        dump read &int:2 &vbyte:register2.
-        dump read &int:3 &vbyte:destRegister.
+        destRegister := ((aInstruction shift &index:08) and: 00Fh).
+        register1    := ((aInstruction shift &index:12) and: 00Fh).
+        register2    := ((aInstruction shift &index:16) and: 0FFFFh).
         
+        #var op1 := aVm getRegister:register1.
+        #var op2 := aVm getRegister:register2.
+        #var flags := aVm getRegister:12.
+        #var result := op1 + op2.
         
+        flags := flags and: (vm'Flags Carry not).
+        flags := flags and: (vm'Flags Overflow not).
+        flags := flags and: (vm'Flags Sign not).
+        
+        (result == 0)
+            ? [ flags := flags or: (vm'Flags Zero). ]
+            ! [ flags := flags and: ((vm'Flags Zero) not). ].
+            
+        aVm setRegister &register:destRegister &value:result.
+        aVm setRegister &register:12 &value:flags.   
     ]
 }
