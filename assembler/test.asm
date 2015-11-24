@@ -2,7 +2,7 @@
 li %r14, 0xFFFF
 
 
-; This is our entry point
+;entry point
 kmain:
 	mov %r13, %r14
 	subi %r14, %r14, 20
