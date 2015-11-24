@@ -21,6 +21,7 @@ Tokens\tokenComma.l
 Tokens\tokenHash.l
 Tokens\tokenColon.l
 Assemblers\assembleAdd.l
+Assemblers\assembleLi.l
 main.l
 lexer.l
 cpuRegister.l
@@ -32,5 +33,3 @@ instruction.l
 binaryFile.l
 codeGenerator.l
 cpuSymbol.l
-Assemblers\AssembleLi.l
-
