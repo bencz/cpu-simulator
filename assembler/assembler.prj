@@ -1,4 +1,4 @@
-﻿[project]
+[project]
 executable=assembler.exe
 arguments=-o out.bin test.asm
 output=obj
@@ -19,7 +19,8 @@ Tokens\tokenRegister.l
 Tokens\tokenIndirectRegister.l
 Tokens\tokenComma.l
 Tokens\tokenHash.l
-Tokens\tokenColon.l
+Tokens\tokenColon.l  
+Assemblers\assembleAdd.l
 main.l
 lexer.l
 cpuRegister.l
@@ -28,4 +29,5 @@ opcodes.l
 label.l
 token.l
 instruction.l
+binaryFile.l
 
