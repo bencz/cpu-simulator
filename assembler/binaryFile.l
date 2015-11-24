@@ -14,8 +14,15 @@
         position := 0.
     ]
     
-    #method emit : aData
+    #method emit &data:aData
     [
-        aData setPosition 
+        aData setPosition:position.
+        instructions += aData.
+        position := position + aData GetLength.
+    ]
+    
+    #method emit &cpuSymbol:aCpu
+    [
+        symbolTable@(aCpu Name) := position int.
     ]
 }

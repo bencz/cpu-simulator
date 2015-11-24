@@ -4,12 +4,14 @@
 {
     #field mnemonic.
     
-    #constructor new:aMnemonic
+    #constructor new
     [
-        mnemonic := aMnemonic.
+        mnemonic := "add".
     ]
     
-    #method assemble &codeGen:aCodeGen &instruction:aInstruction &byteCodeStream:str
+    #method assemble &codeGen:aCodeGen &instruction:aIns &byteCodeStream:aStr
     [
     ]
+    
+    #method Mnemonic = mnemonic.
 }

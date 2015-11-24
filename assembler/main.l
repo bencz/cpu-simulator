@@ -4,6 +4,12 @@
 #import system'io.
 #import extensions.
 
+#symbol $registerAssembler = aCodeGen
+[
+    aCodeGen registerAssembler:(assembler'Assemblers'AssembleAdd new).
+    aCodeGen registerAssembler:(assembler'Assemblers'AssembleLi new).
+].
+
 #symbol program =
 [
     #var source := $nil.
@@ -28,4 +34,12 @@
     
     #var parser := assembler'Parser new.
     parser processTokens &tokens:(lexer TokenList).
+    
+    #var tt := IntNumber new &int:0FFFFh.
+    #var bb := tt short.
+    
+    #var bin := assembler'BinaryFile new.
+    #var cgen := assembler'CodeGenerator new:bin.
+    $registerAssembler:cgen.
+    cgen assemble:(parser Output).
 ].

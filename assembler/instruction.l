@@ -48,7 +48,7 @@
         opcode := ByteNumber new.
         reg1 := ByteNumber new.
         reg2 := ByteNumber new.
-        immediate := ShortNumber new.        
+        immediate := ByteArray new &length:4.       
         immediateIsRegister := false.
         operandIsConditionCode := false.
         relative := false.
@@ -154,6 +154,17 @@
         final := final or: (immediate   shift &index:(-16)).
         ^final.
     ]
+    
+    #method setPosition : addr
+    [
+        address := addr.
+    ]
+    
+    #method writeData : stream
+    [
+    ]
+    
+    #method GetLength = 4.
     
     #method Address = address.
     #method Address : aAddress [ address := aAddress. ]
