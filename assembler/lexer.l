@@ -77,7 +77,7 @@
     #field position.
     #field tokenList.
     
-    #method getList = tokenList.
+    #method TokenList = tokenList.
     
     #constructor new &sourceFile:aSource
     [
@@ -106,18 +106,25 @@
                     lineNumber := lineNumber + 1.
                 ].
                 skipThis := true.
-                tokenList += (assembler'Tokens'TokenEOL new &line:lineNumber).
+                
+                #var auxTk := assembler'Tokens'TokenEOL new &line:lineNumber.
+                tokenList += (assembler'Token new &token:auxTk &tokenType:(assembler'TokenType EOL)).
+                //tokenList += (assembler'Tokens'TokenEOL new &line:lineNumber).
             ].
                    
             ((skipThis == false) and: ($isDigit:($self peekChar)))?
             [
-                tokenList += ($self scanIntLiteral).
+                #var auxTk := $self scanIntLiteral.
+                tokenList += (assembler'Token new &token:auxTk &tokenType:(assembler'TokenType IntLiteral)).
+                //tokenList += ($self scanIntLiteral).
                 skipThis := true.
             ].
             
             ((skipThis == false) and: (($self peekChar toInt) == 022h)) ? // 0x22 == '\"'
             [
-                tokenList += ($self scanStringLiteral).
+                #var auxTk := $self scanStringLiteral.
+                tokenList += (assembler'Token new &token:auxTk &tokenType:(assembler'TokenType StringLiteral)).
+                //tokenList += ($self scanStringLiteral).
                 skipThis := true.
             ].
             
@@ -129,19 +136,43 @@
             
             ((skipThis == false) and: ($isLetter:($self peekChar)) or: (($self peekChar toInt) == 2Eh)) ? // 0x2E == '.'
             [
-                tokenList += ($self scanIdentifier).
+                #var auxTk := $self scanIdentifier.
+                tokenList += (assembler'Token new &token:auxTk &tokenType:(assembler'TokenType Identifier)).
+                //tokenList += ($self scanIdentifier).
                 skipThis := true.
             ].
             
             (skipThis == false) ?
             [
-                //#var auxChar := ($self peekChar literal) length.
                 ($self peekChar literal) =>
-                    "%" ? [ tokenList += ($self scanRegister). ]
-                    "@" ? [ tokenList += ($self scanIndirectRegister). ]
-                    "," ? [ $self readChar. tokenList += (assembler'Tokens'TokenComma new &line:lineNumber). ]
-                    "#" ? [ $self readChar. tokenList += (assembler'Tokens'TokenHash new &line:lineNumber). ]
-                    ":" ? [ $self readChar. tokenList += (assembler'Tokens'TokenColon new &line:lineNumber). ].
+                    "%" ? [ 
+                            #var auxTk := $self scanRegister.
+                            tokenList += (assembler'Token new &token:auxTk &tokenType:(assembler'TokenType Register)).
+                            //tokenList += ($self scanRegister). 
+                          ]
+                    "@" ? [
+                            #var auxTk := $self scanIndirectRegister.
+                            tokenList += (assembler'Token new &token:auxTk &tokenType:(assembler'TokenType IndirectRegister)).
+                            //tokenList += ($self scanIndirectRegister). 
+                          ]
+                    "," ? [ 
+                            $self readChar. 
+                            #var auxTk := assembler'Tokens'TokenComma new &line:lineNumber.
+                            tokenList += (assembler'Token new &token:auxTk &tokenType:(assembler'TokenType Comma)).
+                            //tokenList += (assembler'Tokens'TokenComma new &line:lineNumber). 
+                          ]
+                    "#" ? [ 
+                            $self readChar. 
+                            #var auxTk := assembler'Tokens'TokenHash new &line:lineNumber.
+                            tokenList += (assembler'Token new &token:auxTk &tokenType:(assembler'TokenType Hash)).
+                            //tokenList += (assembler'Tokens'TokenHash new &line:lineNumber).
+                          ]
+                    ":" ? [
+                            $self readChar.
+                            #var auxTk := assembler'Tokens'TokenColon new &line:lineNumber.
+                            tokenList += (assembler'Token new &token:auxTk &tokenType:(assembler'TokenType Colon)).
+                            //tokenList += (assembler'Tokens'TokenColon new &line:lineNumber). 
+                          ].
             ].
         ].
     ]

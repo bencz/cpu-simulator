@@ -18,4 +18,7 @@
         register := aRegister.
         line := aLine.
     ]
+    #method Line = line.
+    #method Register = register.
+    #method Offset = offset.
 }

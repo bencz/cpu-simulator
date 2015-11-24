@@ -15,4 +15,6 @@
     [
         ^(value literal).
     ]
+    #method Line = line.
+    #method Value = value.
 }

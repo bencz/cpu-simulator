@@ -1,4 +1,5 @@
 #import system.
+#import system'dynamic.
 #import system'routines.
 #import system'io.
 #import extensions.
@@ -25,8 +26,6 @@
     #var lexer := assembler'Lexer new &sourceFile:source.
     lexer scan.
     
-    (lexer getList) run &each: element
-    [
-        #var tt := element.
-    ].
+    #var parser := assembler'Parser new.
+    parser processTokens &tokens:(lexer TokenList).
 ].

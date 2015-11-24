@@ -15,4 +15,9 @@
     [
         ^(value literal).
     ]
+    
+    #method Value = value.
+    #method Value:aValue [ value := aValue. ]
+    
+    #method Line = line.
 }

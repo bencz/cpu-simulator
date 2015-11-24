@@ -11,17 +11,21 @@ warn:unresolved=-1
 'program=assembler'program
 
 [files]
-main.l
-lexer.l
 Tokens\tokenIntLiteral.l
 Tokens\tokenEOL.l
 Tokens\tokenStringLiteral.l
 Tokens\tokenIdentifier.l
-cpuRegister.l
 Tokens\tokenRegister.l
 Tokens\tokenIndirectRegister.l
 Tokens\tokenComma.l
 Tokens\tokenHash.l
 Tokens\tokenColon.l
+main.l
+lexer.l
+cpuRegister.l
 parser.l
+opcodes.l
+label.l
+token.l
+instruction.l
 

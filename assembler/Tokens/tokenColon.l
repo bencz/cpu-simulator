@@ -13,4 +13,5 @@
     [
         ^(":").
     ]
+    #method Line = line.
 }

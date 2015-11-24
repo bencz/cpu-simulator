@@ -13,4 +13,6 @@
     [
         ^("End of line").
     ]
+    
+    #method Line = line.
 }

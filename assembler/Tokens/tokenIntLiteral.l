@@ -16,5 +16,6 @@
         ^(value literal).
     ]
     
-    #method getValue = value.
+    #method Value = value.
+    #method Line = line.
 }
