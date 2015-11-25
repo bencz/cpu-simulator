@@ -17,6 +17,7 @@
     [
         register := aRegister.
         line := aLine.
+        offset := 0.
     ]
     #method Line = line.
     #method Register = register.

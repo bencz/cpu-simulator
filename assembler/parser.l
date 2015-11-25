@@ -75,33 +75,10 @@
                   ].
                   
             newInstructions += o.
-            
             i := i + 1.
         ].
-        /*instructions run &each: o
-        [          
-            (o Type) =>
-                (assembler'TypeInstruction Instruction)
-                ? [
-                    (o Operands) run &each: token
-                    [
-                        (token tokenType == assembler'TokenType Identifier)?
-                        [
-                            ((token token Value) startingWith:".")
-                                ? [ token token Value:(globalScope + token token Value). ].
-                        ].
-                    ].
-                  ]
-                  
-                (assembler'TypeInstruction Label)
-                ? [
-                    ((o Name) startingWith:".")
-                        ? [ o Name:(globalScope + o Name). ]
-                        ! [ globalScope := o Name literal. ]. 
-                  ].
-                  
-            newInstructions += o.
-        ].*/
+        instructions clear.
+        instructions := newInstructions clone. 
     ]
     
     #method parseLabel
