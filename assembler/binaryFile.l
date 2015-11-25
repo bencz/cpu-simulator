@@ -41,37 +41,20 @@
                     [
                         #var key := symbolTable@(tmp Symbol).
                         ($nil != key)
-                        ? [ 
-                        tmp resolveSymbol &sym:(tmp Symbol) &address:key. ].
+                        ? [ tmp resolveSymbol &sym:(tmp Symbol) &address:key. ].
                     ].
-                ]
-                ! [].
+                ].
             i := i + 1.
         ].
     ]
     
     #method generate : outPutFile
     [
-        #var(type:bytearray,size:4) auxWriter.
         #var aWriter := BinaryFileWriter new &path:outPutFile.
         
         instructions run &each: data
         [
-            #var(type:int) tmp := data toMachineCode.
-            auxWriter write &int:0 &int:tmp.
-            
-            #var(type:byte)v1.
-            auxWriter read &int:0 &vbyte:v1.
-            aWriter write &byte:(v1).
-            
-            auxWriter read &int:1 &vbyte:v1.
-            aWriter write &byte:(v1).
-            
-            auxWriter read &int:2 &vbyte:v1.
-            aWriter write &byte:(v1).
-            
-            auxWriter read &int:3 &vbyte:v1.
-            aWriter write &byte:(v1).
+            data writeData:aWriter.
         ].
         
         aWriter close.

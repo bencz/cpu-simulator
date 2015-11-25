@@ -63,7 +63,7 @@
         ((c >= 97) and: (c <= 102)) 
             ? [ tmp := c - 97 + 10. ].
         ($isDigit:c)
-            ? [ tmp := c - 30. ].
+            ? [ tmp := c - 48. ].
             
         ret := 16 * ret + tmp.
         i := i + 1.
@@ -93,7 +93,7 @@
         #var skipThis := false.
         sourceFile := $readAllText:sourceFile.
         #loop (position < sourceFile length)?
-        [
+        [            
             #loop (($self peekChar != LF) and: ($isWhiteSpace:($self peekChar)))
                 ? [ $self readChar. ].
          

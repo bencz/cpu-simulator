@@ -1,5 +1,6 @@
 #import system.
 #import system'io.
+#import system'math.
 #import system'collections.
 
 #symbol(const,type:int)TY_Label       = 0.
@@ -46,16 +47,36 @@
     
     #constructor new &data:aData
     [
-        data := aData.
+        #var size := (aData length + aData length mod: 4) int.
+        data := Array new &length:size.
+        
+        #var i := 0.
+        #loop (i < size) ?
+        [
+            (i < aData length)
+                ? [ data@i := aData@i. ]
+                ! [ data@i := ByteNumber new. ]. 
+            i := i + 1.
+        ].
+        
         type := assembler'TypeInstruction CpuData.
     ]
     
     #method writeData : stream
     [
-        
+        #var i := 0.
+        #loop (i < data length)?
+        [
+            stream write &byte:((data@i) byte).
+            i := i + 1.
+        ].
     ]
     
-    #method getLength
+    #method setPosition : addr
+    [
+    ]
+    
+    #method GetLength
     [
         ^(data length).
     ]
@@ -198,6 +219,22 @@
     
     #method writeData : stream
     [
+        #var(type:bytearray,size:4) auxWriter.
+        #var(type:int) tmp := $self toMachineCode.
+        auxWriter write &int:0 &int:tmp.
+            
+        #var(type:byte)v1.
+        auxWriter read &int:0 &vbyte:v1.
+        stream write &byte:(v1).
+            
+        auxWriter read &int:1 &vbyte:v1.
+        stream write &byte:(v1).
+            
+        auxWriter read &int:2 &vbyte:v1.
+        stream write &byte:(v1).
+          
+        auxWriter read &int:3 &vbyte:v1.
+        stream write &byte:(v1).
     ]
     
     #method GetLength = 4.
