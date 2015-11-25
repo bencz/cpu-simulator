@@ -18,7 +18,6 @@
     
     #method assemble : instructions
     [
-        #var i := 0.
         instructions run &each: ins
         [
             (ins Type) =>
@@ -35,7 +34,6 @@
                     #var cpuSymbol := assembler'CpuSymbol new:ins Name.
                     output emit &cpuSymbol:cpuSymbol.
                   ].
-             i := i + 1.
         ].
     ]
     

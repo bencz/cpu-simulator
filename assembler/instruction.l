@@ -184,7 +184,7 @@
         reg1 := code byte.
         symbol := aSym.
         operandIsConditionCode := true.
-        relative := relative.
+        relative := aRelative.
     ]
     
     #method resolveSymbol &sym:aSym &address:aAddr

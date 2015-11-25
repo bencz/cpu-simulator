@@ -32,7 +32,7 @@
             #var lbl := operands@0 token.
             #var conditionCode := assembler'ConditionCode Always.
             
-            (lbl Value) =>
+            (aIns Name) =>
                 "blc" ?  [ conditionCode := assembler'ConditionCode Carry. ]
                 "bls" ?  [ conditionCode := assembler'ConditionCode Sign. ]
                 "blv" ?  [ conditionCode := assembler'ConditionCode Overflow. ]
