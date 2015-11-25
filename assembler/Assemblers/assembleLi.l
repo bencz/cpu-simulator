@@ -1,4 +1,5 @@
 #import system.
+#import system'collections.
 
 #class AssembleLi
 {
@@ -6,7 +7,8 @@
     
     #constructor new
     [
-        mnemonic := "li".
+        mnemonic := List new.
+        mnemonic += "li".
     ]
     
     #method assemble &codeGen:aCodeGen &instruction:aIns &byteCodeStream:aStr

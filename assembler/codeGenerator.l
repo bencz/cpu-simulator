@@ -31,6 +31,8 @@
                 
                 (assembler'TypeInstruction Label)
                 ? [
+                    #var cpuSymbol := assembler'CpuSymbol new:ins Name.
+                    output emit &cpuSymbol:cpuSymbol.
                   ].
         ].
     ]
@@ -44,12 +46,18 @@
     #method searchForMnemonics : aMn
     [        
         #var i := 0.
+        #var j := 0.
         #loop (i < assemblers length)?
         [
             #var asb := assemblers@i.
-            (asb Mnemonic == aMn)
-                ? [ ^assemblers@i. ].
+            #loop (j < asb Mnemonic length)?
+            [
+                ((asb Mnemonic)@j == aMn)
+                    ? [ ^assemblers@i. ].
+                j := j + 1.
+            ].
             i := i + 1.
+            j := 0.
         ].
         ^$nil.
     ]

@@ -1,13 +1,21 @@
 #import system.
+#import system'io.
 #import system'collections.
 
 #symbol(const,type:int)TY_Label       = 0.
 #symbol(const,type:int)TY_Instruction = 1.
 
+// Used to separete data from instruction..
+#symbol(const,type:int)T_Data = 0.
+#symbol(const,type:int)T_Inst = 1.
+
 #class(extension) TypeInstruction
 {
     #method Label = TY_Label.
     #method Instruction = TY_Instruction.
+    
+    #method CpuData = T_Data.
+    #method CpuInstruction = T_Inst.
 }
 
 #class Instruction
@@ -31,6 +39,30 @@
     #method Type = type.
 }
 
+#class CpuData
+{
+    #field data.
+    #field type.
+    
+    #constructor new &data:aData
+    [
+        data := aData.
+        type := assembler'TypeInstruction CpuData.
+    ]
+    
+    #method writeData : stream
+    [
+        
+    ]
+    
+    #method getLength
+    [
+        ^(data length).
+    ]
+    
+    #method Type = type.
+}
+
 #class CpuInstruction
 {
     #field address.
@@ -44,6 +76,8 @@
     #field operandIsConditionCode.
     #field relative.
     
+    #field type.
+    
     #method init
     [
         opcode := ByteNumber new.
@@ -53,6 +87,7 @@
         immediateIsRegister := false.
         operandIsConditionCode := false.
         relative := false.
+        type := assembler'TypeInstruction CpuInstruction.
     ]
     
     #constructor new &opcode:aOpcode &cpuRegister:aRegister
@@ -171,4 +206,6 @@
     #method Address : aAddress [ address := aAddress. ]
     
     #method Symbol = symbol.
+    
+    #method Type = type.
 }

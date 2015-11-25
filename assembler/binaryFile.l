@@ -31,12 +31,22 @@
     
     #method finalizeExecutable
     [
-        /*#var i := 0.
+        #var i := 0.
         #loop (i < instructions length) ?
         [
-            //(instructions@i
-            //i := i + 1.
-        ].*/
+            #var tmp := (instructions@i).
+            (tmp Type == assembler'TypeInstruction CpuInstruction)?
+                [
+                    ($nil != tmp Symbol)?
+                    [
+                        #var key := symbolTable@(tmp Symbol).
+                        ($nil != key)
+                        ? [ tmp resolveSymbol &sym:(tmp Symbol) &address:key. ].
+                    ].
+                ]
+                ! [].
+            i := i + 1.
+        ].
     ]
     
     #method generate : outPutFile
