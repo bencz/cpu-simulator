@@ -29,8 +29,13 @@
             //#var tokenType := $self peekToken tokenType.
             //#var token := $self peekToken token.
             
-            #loop ((position < tokens length) && (($self peekToken) tokenType == assembler'TokenType EOL))
-                ? [ $self readToken. ]. 
+            #var tmp := true.
+            #loop ((position < tokens length) and: tmp)?
+            [
+                (($self peekToken) tokenType == assembler'TokenType EOL)
+                ? [ $self readToken. ]
+                ! [ tmp := false. ]. 
+            ].
             
             (position < tokens length)?
             [
@@ -44,7 +49,36 @@
         
         #var globalScope := "".
         #var newInstructions := List new.
-        instructions run &each: o
+        #var i := 0.
+        #loop (i < instructions length)?
+        [
+            #var o := instructions@i.
+
+            (o Type) =>
+                (assembler'TypeInstruction Instruction)
+                ? [
+                    (o Operands) run &each: token
+                    [
+                        (token tokenType == assembler'TokenType Identifier)?
+                        [
+                            ((token token Value) startingWith:".")
+                                ? [ token token Value:(globalScope + token token Value). ].
+                        ].
+                    ].
+                  ]
+                  
+                (assembler'TypeInstruction Label)
+                ? [
+                    ((o Name) startingWith:".")
+                        ? [ o Name:(globalScope + o Name). ]
+                        ! [ globalScope := o Name literal. ]. 
+                  ].
+                  
+            newInstructions += o.
+            
+            i := i + 1.
+        ].
+        /*instructions run &each: o
         [          
             (o Type) =>
                 (assembler'TypeInstruction Instruction)
@@ -67,7 +101,7 @@
                   ].
                   
             newInstructions += o.
-        ].
+        ].*/
     ]
     
     #method parseLabel

@@ -21,7 +21,7 @@
             #var val := (operands@1 token) Value.
             #var opCode := assembler'Opcode Li.
             #var tmp := assembler'CpuInstruction new &opcode:opCode &cpuReg1:register &imm:val.
-            aStr emit:tmp.
+            aStr emit &data:tmp.
         ].
         
         ((operands@0 tokenType == assembler'TokenType Register) && (operands@1 tokenType == assembler'TokenType Identifier))?

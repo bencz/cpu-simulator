@@ -1,4 +1,5 @@
 #import system.
+#import system'collections.
 
 #symbol(const,type:int)TY_Label       = 0.
 #symbol(const,type:int)TY_Instruction = 1.
@@ -48,7 +49,7 @@
         opcode := ByteNumber new.
         reg1 := ByteNumber new.
         reg2 := ByteNumber new.
-        immediate := ByteArray new &length:4.       
+        immediate := IntNumber new. //ByteArray new &length:4.       
         immediateIsRegister := false.
         operandIsConditionCode := false.
         relative := false.
@@ -109,7 +110,7 @@
         $self init.
         opcode := aOpcode byte.
         reg1 := aReg1 byte.
-        immediate := aImm short.
+        immediate := aImm int.
     ]
     
     #constructor new &opcode:aOpcode &cpuReg1:aReg1 &strImm:aImm

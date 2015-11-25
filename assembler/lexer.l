@@ -8,6 +8,7 @@
 #import system'culture.
 
 #symbol(const,type:int) LF  = 0Ah.
+#symbol(const,type:int) CR  = 0Dh.
 #symbol(const,type:int) TAB = 09h.
 #symbol(const,type:int) SPACE = 20h.
 
@@ -27,7 +28,7 @@
 #symbol $isWhiteSpace = ch
 [
     #var c := ch toInt.
-    ^((c == SPACE) or: (c == TAB)).
+    ^((c == SPACE) or: (c == TAB) or: (c == LF) or: (c == CR)).
 ].
 
 #symbol $isDigit = ch

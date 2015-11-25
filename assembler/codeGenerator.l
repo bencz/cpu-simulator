@@ -12,6 +12,8 @@
     [
         assemblers := List new.
         output := aOutput.
+        
+        $self registerAssembler.
     ]
     
     #method assemble : instructions
@@ -33,9 +35,10 @@
         ].
     ]
     
-    #method registerAssembler : asm
+    #method registerAssembler
     [
-        assemblers += asm.
+        assemblers += (assembler'Assemblers'AssembleAdd new).
+        assemblers += (assembler'Assemblers'AssembleLi new).
     ]
     
     #method searchForMnemonics : aMn
