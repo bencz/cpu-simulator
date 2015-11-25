@@ -41,7 +41,8 @@
                     [
                         #var key := symbolTable@(tmp Symbol).
                         ($nil != key)
-                        ? [ tmp resolveSymbol &sym:(tmp Symbol) &address:key. ].
+                        ? [ 
+                        tmp resolveSymbol &sym:(tmp Symbol) &address:key. ].
                     ].
                 ]
                 ! [].

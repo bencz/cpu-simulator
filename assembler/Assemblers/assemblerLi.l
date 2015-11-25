@@ -28,6 +28,11 @@
         
         ((operands@0 tokenType == assembler'TokenType Register) && (operands@1 tokenType == assembler'TokenType Identifier))?
         [
+            #var register := (operands@0 token) Register.
+            #var identifier := (operands@1 token) Value.
+            #var opCode := assembler'Opcode Li.
+            #var tmp := assembler'CpuInstruction new &opcode:opCode &cpuReg1:register &strImm:identifier.
+            aStr emit &data:tmp.
         ].
     ]
     

@@ -118,7 +118,7 @@
         opcode := aOpcode byte.
         reg1 := aReg1 byte.
         reg2 := aReg2 byte.
-        immediate := aReg3 short.
+        immediate := aReg3 int.
         immediateIsRegister := true.
     ]
     
@@ -128,7 +128,7 @@
         opcode := aOpcode byte.
         reg1 := aReg1 byte.
         reg2 := aReg2 byte.
-        immediate := aImm short.
+        immediate := aImm int.
     ]
     
     #constructor new &opcode:aOpcode &cpuReg1:aReg1 &cpuReg2:aReg2 &strImm:aImm

@@ -58,5 +58,5 @@ instruction.l
 binaryFile.l
 codeGenerator.l
 cpuSymbol.l
-
+conditionCode.l
 
