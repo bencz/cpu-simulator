@@ -39,4 +39,5 @@ flags.l
 conditionCode.l
 instructions\instructionXor.l
 instructions\instructionXori.l
+disassembler.l
 

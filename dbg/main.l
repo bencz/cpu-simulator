@@ -42,31 +42,56 @@
     #field form.
     // cpu vm instance
     #field cpu.
+    #field instructionDisassembler.
+    #field theTextField.
         
     // Labels of registers!
-    #field listLabelsRegisters.
-    
-    #field stepButton.
+    #field listLabelsRegisters.   
     
     #constructor new
     [        
         cpu := cpuvm'Cpu new.
+        instructionDisassembler := cpuvm'Disassembler new.
         
         form := SDIDialog new.
         
-        stepButton := Button new.
+        #var stepButton := Button new.
+        #var loadButton := Button new.
+        #var resetButton := Button new.
+        theTextField := Memo new.
+        
         form controls 
-            += stepButton.
+            += stepButton
+            += loadButton
+            += resetButton
+            += theTextField.
         
         form set &caption:"CPU-Simulator -- Debugger".
         form set &x:100 &y:100.
         form set &width:800 &height:600.    
         
-        stepButton set &x:190 &y:10.
-        stepButton set &width:140 &height:25.
+        theTextField set &x:180 &y:10.
+        theTextField set &width:600 &height:400.
+        theTextField set &caption:(""). 
+        
+        stepButton set &x:10 &y:380.
+        stepButton set &width:75 &height:25.
         stepButton set &caption:"Step".
         stepButton set &onClick:args
             [ $self $makeStep. ].
+            
+        resetButton set &x:10 &y:410.
+        resetButton set &width:75 &height:25.
+        resetButton set &caption:"Halt".
+        resetButton set &onClick:args
+            [ $self $resetCpu. ].            
+
+            
+        loadButton set &x:10 &y:440.
+        loadButton set &width:75 &height:25.
+        loadButton set &caption:"Load".
+        loadButton set &onClick:args
+            [ $self $loadProgram. ].
           
         
         // Generate the labels
@@ -89,7 +114,7 @@
                 regName := ($getRegisterName:i) + ": 0x" + zero.
               ].
               
-            tmp set &x:30 &y:(y int).
+            tmp set &x:10 &y:(y int).
             tmp set &width:170 &height:30.
             tmp set &caption:(regName).
             y := y + 20.
@@ -101,6 +126,70 @@
     [
         cpu doStep.
         $self updateRegisterLabels.
+    ]
+    
+    #method $loadProgram
+    [
+        #var openFile := SaveFileDialog new:$self.
+        openFile addFilter &caption:"All files" &extension:"*.*".
+        openFile set &caption:"Select a file".
+        (openFile run) ?
+        [   
+            cpu loadProgram &fileName:(openFile selected).
+            $self $disassembleProgram.
+        ].
+    ]
+    
+    #method $haltCpu
+    [
+        //cpu Halted:true.
+    ]
+    
+    #method $startCpu
+    [
+        /*cpu Halted:false.
+        #loop (cpu Halted != true) ?
+        [
+            #var i := 0. -1.
+            #loop ((i < (cpu Speed / 100)) and: (cpu Halted != true))?
+            [
+                cpu Halted:(cpu decodeInstruction:(cpu fetchInstruction) not).
+                $self updateRegisterLabels.
+                i := i + 1.
+            ].
+        ].*/
+    ]
+    
+    #method $resetCpu
+    [
+        cpu reset.
+        $self updateRegisterLabels.
+    ]
+    
+    #method $disassembleProgram
+    [
+        #var instruction := 0.
+        #var continue := true.
+        #var disassemblyText := "".
+        #var i := 1.
+        #loop (continue)?
+        [
+            instruction := cpu fetchInstruction.
+            
+            #var tmp := instructionDisassembler disassembleInstruction:(instruction).
+            ($nil == tmp) 
+                ? [ continue := false. ]
+                ! [
+                    #var nl := ((i literal) padLeft &char:(CharValue new &char:#48) &int:4). 
+                    #var ins := instruction toLiteral &base:16.
+                    #var lin := (nl + " | " + ins + " | >>>>> " + tmp + #0Dh + #0Ah).
+                    disassemblyText := (disassemblyText + lin). 
+                  ].
+            i := i + 1.
+        ].
+        theTextField set &caption:(disassemblyText).
+        disassemblyText := "".
+        cpu reset.
     ]
     
     #method updateRegisterLabels

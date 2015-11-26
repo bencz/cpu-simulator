@@ -17,6 +17,7 @@
     #field speed.
     #field instructions.
     #field controlRegister.
+    #field currentInstruction.
     
     #constructor new
     [
@@ -100,7 +101,8 @@
     
     #method doStep
     [
-        halted := $self decodeInstruction:($self fetchInstruction) not. 
+        currentInstruction := $self fetchInstruction.
+        halted := $self decodeInstruction:(currentInstruction) not. 
     ]
     
     #method emulate
@@ -162,4 +164,11 @@
     
     #method getMemory = physicalMemory.
     #method controlRegister = controlRegister.
+    
+    #method Halted = halted.
+    #method Halted:aValue [ halted := aValue. ]
+    
+    #method Speed = speed.
+    
+    #method CurrentInstruction = currentInstruction.
 }
