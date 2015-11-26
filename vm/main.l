@@ -21,4 +21,5 @@
     #var cpu := vm'Cpu new.
     cpu loadProgram : ($loadBytes:"test.bin").
     cpu emulate.
+    console writeLine:"oi".
 ].

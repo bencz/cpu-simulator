@@ -98,7 +98,9 @@
         #loop ((i < (speed / 100)) and: (halted != true))?
         [
             //instruction := $self fetchInstruction.
-            //halted := $self decodeInstruction:instruction.
+            //#var uu := (i literal) padLeft &char:(CharValue new &char:#48) &int:4.
+            //console writeLine:(uu + " ---- " + (instruction toLiteral &base:16) + " ---- " + ($self getRegister:15) toLiteral &base:16).
+            //halted := $self decodeInstruction:instruction not.
             halted := $self decodeInstruction:($self fetchInstruction) not.
             i := i + 1.
         ].

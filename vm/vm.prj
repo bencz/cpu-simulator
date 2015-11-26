@@ -1,4 +1,4 @@
-﻿[project]
+[project]
 executable=vm.exe
 output=obj
 namespace=vm
@@ -10,13 +10,6 @@ warn:unresolved=-1
 'program=vm'program
 
 [files]
-main.l
-cpu.l
-memoryPhysical.l
-memoryBlock.l
-memoryVirtual.l
-flags.l
-conditionCode.l
 instructions\instructionAdd.l
 instructions\instructionAddi.l
 instructions\instructionAnd.l
@@ -38,4 +31,11 @@ instructions\instructionPush.l
 instructions\instructionPop.l
 instructions\instructionSli.l
 instructions\instructionSri.l
+main.l
+cpu.l
+memoryPhysical.l
+memoryBlock.l
+memoryVirtual.l
+flags.l
+conditionCode.l
 

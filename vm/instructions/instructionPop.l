@@ -24,7 +24,7 @@
     #method pop &vm:aVm
     [
         #var sp := aVm getRegister:14.
-        aVm setRegister &register:14 &value:(sp + 4).
+        aVm setRegister &register:14 &value:(sp + 4).        
         ^aVm getMemory readWord:sp.    
     ]
 }
