@@ -135,6 +135,7 @@
         openFile set &caption:"Select a file".
         (openFile run) ?
         [   
+            $self $resetCpu.
             cpu loadProgram &fileName:(openFile selected).
             $self $disassembleProgram.
         ].

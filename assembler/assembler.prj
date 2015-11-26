@@ -1,6 +1,6 @@
 ﻿[project]
 executable=assembler.exe
-arguments=-o out.bin test.asm
+arguments=-o out.bin test1.asm
 output=obj
 namespace=assembler
 template=console
