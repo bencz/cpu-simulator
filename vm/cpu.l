@@ -94,14 +94,14 @@
     #method cpuTick
     [
         #var i := 0.
-        //#var instruction := -1.
+        #var instruction := -1.
         #loop ((i < (speed / 100)) and: (halted != true))?
         [
-            //instruction := $self fetchInstruction.
-            //#var uu := (i literal) padLeft &char:(CharValue new &char:#48) &int:4.
-            //console writeLine:(uu + " ---- " + (instruction toLiteral &base:16) + " ---- " + ($self getRegister:15) toLiteral &base:16).
-            //halted := $self decodeInstruction:instruction not.
-            halted := $self decodeInstruction:($self fetchInstruction) not.
+            instruction := $self fetchInstruction.
+            #var uu := (i literal) padLeft &char:(CharValue new &char:#48) &int:4.
+            console writeLine:(uu + " ---- " + (instruction toLiteral &base:16) + " ---- " + ($self getRegister:15) toLiteral &base:16).
+            halted := $self decodeInstruction:instruction not.
+            //halted := $self decodeInstruction:($self fetchInstruction) not.
             i := i + 1.
         ].
     ]

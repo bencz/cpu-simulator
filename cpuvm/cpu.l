@@ -1,4 +1,5 @@
 #import system.
+#import system'io.
 #import system'routines.
 #import system'collections.
 #import extensions.
@@ -59,7 +60,7 @@
         instructions@0Fh := cpuvm'instructions'InstructionSri new.
     ]
     
-    #method loadProgram : aProgram
+    #method loadProgram &dataBytes:aProgram
     [
         #var i := 0.
         #loop (i < aProgram length) ?
@@ -67,6 +68,20 @@
             physicalMemory writeByte &address:i &byt:(aProgram@i). 
             i := i + 1.
         ].
+    ]
+    
+    #method loadProgram &fileName:aFileName
+    [
+        #var(type:vbyte) byte := 0.
+        #var br := BinaryFileReader new &path:aFileName.   
+        #var i := 0.
+        #loop (br available) ?
+        [
+            br read &vbyte:byte.
+            physicalMemory writeByte &address:i &byt:(byte). 
+            i := i + 1.
+        ].
+        br close.  
     ]
     
     #method setRegister &register:aRegister &value:aValue
@@ -81,6 +96,11 @@
         ((controlRegister and: UserMode) == 0)
             ? [ ^registersSupervisor@aRegister. ]
             ! [ ^registersUser@aRegister. ].
+    ]
+    
+    #method doStep
+    [
+        halted := $self decodeInstruction:($self fetchInstruction) not. 
     ]
     
     #method emulate
