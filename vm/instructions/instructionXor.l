@@ -1,11 +1,12 @@
 #import system.
 
-#class InstructionAnd
+#class InstructionXor
 {
 	#constructor new []
 
 	#method interpret &ins:aInstruction &vm:aVm
     [
+        #var(type:bytearray,size:8)dump.
         #var(type:byte)register1.
         #var(type:byte)register2.
         #var(type:byte)destRegister.
@@ -17,8 +18,8 @@
         #var op1 := aVm getRegister:register1.
         #var op2 := aVm getRegister:register2.
         #var flags := aVm getRegister:12.
-        #var result := op1 and: op2.
-
+        #var result := op1 xor: op2.
+        
         aVm setRegister &register:destRegister &value:result.
     ]
 }

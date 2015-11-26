@@ -1,4 +1,4 @@
-[project]
+﻿[project]
 executable=vm.exe
 output=obj
 namespace=vm
@@ -38,4 +38,6 @@ memoryBlock.l
 memoryVirtual.l
 flags.l
 conditionCode.l
+instructions\instructionXor.l
+instructions\instructionXori.l
 
