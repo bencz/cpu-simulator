@@ -113,7 +113,6 @@
     
     #method scan
     [
-        #var iiii := 0.
         #var skipThis := false.
         sourceFile := $readAllText:sourceFile.
         #loop (position < sourceFile length)?
@@ -122,7 +121,6 @@
                 ? [ $self readChar. ].
             
             skipThis := false. 
-            iiii := iiii + 1. 
                 
             (($self peekChar) == LF) ?
             [
