@@ -40,7 +40,7 @@
 #symbol(const,type:byte)$OP_Livt  = 25h.
 #symbol(const,type:byte)$OP_Sivt  = 26h.
 
-#class(extension) Opcode
+#symbol Opcode =
 {
     #method Add   = $OP_Add.
     #method Adc   = $OP_Adc.
@@ -81,4 +81,4 @@
     #method Sctl  = $OP_Sctl.
     #method Livt  = $OP_Livt.
     #method Sivt  = $OP_Sivt.
-}
+}.

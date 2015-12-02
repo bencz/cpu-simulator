@@ -17,7 +17,7 @@
 #symbol(const,type:int)$R14 = 14.
 #symbol(const,type:int)$R15 = 15.
 
-#class(extension) Registers
+#symbol Registers =
 {
     #method R0 = $R0.
     #method R1  = $R1.  
@@ -35,4 +35,4 @@
     #method R13 = $R13. 
     #method R14 = $R14.
     #method R15 = $R15. 
-}
+}.

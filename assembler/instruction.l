@@ -10,14 +10,14 @@
 #symbol(const,type:int)T_Data = 0.
 #symbol(const,type:int)T_Inst = 1.
 
-#class(extension) TypeInstruction
+#symbol TypeInstruction =
 {
     #method Label = TY_Label.
     #method Instruction = TY_Instruction.
     
     #method CpuData = T_Data.
     #method CpuInstruction = T_Inst.
-}
+}.
 
 #class Instruction
 {

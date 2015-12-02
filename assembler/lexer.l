@@ -7,10 +7,10 @@
 #import extensions'text.
 #import system'culture.
 
-#symbol(const,type:int) LF  = 0Ah.
-#symbol(const,type:int) CR  = 0Dh.
-#symbol(const,type:int) TAB = 09h.
-#symbol(const,type:int) SPACE = 20h.
+#symbol(const,type:char) LF  = #0Ah.
+#symbol(const,type:char) CR  = #0Dh.
+#symbol(const,type:char) TAB = #09h.
+#symbol(const,type:char) SPACE = #20h.
 
 #symbol $readAllText = aProgram 
 [
@@ -27,26 +27,34 @@
 
 #symbol $isWhiteSpace = ch
 [
-    #var c := ch toInt.
-    ^((c == SPACE) or: (c == TAB) or: (c == LF) or: (c == CR)).
+    #var c := ch /*toInt*/.
+    ($nil == c)
+        ? [ ^false. ]
+        ! [ ^((c == SPACE) or: (c == TAB) or: (c == LF) or: (c == CR)). ].
 ].
 
 #symbol $isDigit = ch
 [
-    #var c := ch toInt.
-    ^((c >= 30h) and: (c <= 39h)).
+    #var c := ch /*toInt*/.
+    ($nil == c)
+        ? [ ^false. ]
+        ! [ ^((c >= #30h) and: (c <= #39h)). ].
 ].
 
 #symbol $isLetter = ch
 [
-    #var c := ch toInt.
-    ^(((c >= 41h) and: (c <= 5Ah)) or: ((c >= 61h) and: (c <= 7Ah))).
+    #var c := ch /*toInt*/.
+    ($nil == c)
+        ? [ ^false. ]
+        ! [ ^(((c >= #41h) and: (c <= #5Ah)) or: ((c >= #61h) and: (c <= #7Ah))). ].
 ].
 
 #symbol $isLetterOrDigit = ch
 [
-    #var c := ch toInt.
-    ^(($isLetter:c) or: ($isDigit:c) or: (c == 5Fh)).
+    #var c := ch /*toInt*/.
+    ($nil == c)
+        ? [ ^false. ]
+        ! [ ^(($isLetter:c) or: ($isDigit:c) or: (c == #5Fh)). ].
 ].
 
 #symbol $htoi = hexString
@@ -57,15 +65,30 @@
     
     #loop (i < hexString length) ?
     [
-        #var c := hexString@i toInt.
-        ((c >= 65) and: (c <= 70))
-            ? [ tmp := c - 65 + 10. ].              
-        ((c >= 97) and: (c <= 102)) 
-            ? [ tmp := c - 97 + 10. ].
+        #var c := hexString@i.
+        ((c >= #65) and: (c <= #70))
+            ? [ tmp := (c toInt) - 65 + 10. ].              
+        ((c >= #97) and: (c <= #102)) 
+            ? [ tmp := (c toInt) - 97 + 10. ].
         ($isDigit:c)
-            ? [ tmp := c - 48. ].
+            ? [ tmp := (c toInt) - 48. ].
             
-        ret := 16 * ret + tmp.
+        ret := (16 * ret) + tmp.
+        i := i + 1.
+    ].
+    ^ret.
+].
+
+#symbol $converToInt = str
+[
+    #var i := 0.
+    #var ret := 0.
+    #loop (i<str length)?
+    [
+        ((str@i != SPACE) && ($isDigit:(str@i)))?
+        [
+            ret := ret * 10 + ((str@i) int) - 48.
+        ].
         i := i + 1.
     ].
     ^ret.
@@ -90,19 +113,23 @@
     
     #method scan
     [
+        #var iiii := 0.
         #var skipThis := false.
         sourceFile := $readAllText:sourceFile.
         #loop (position < sourceFile length)?
-        [            
+        [           
             #loop (($self peekChar != LF) and: ($isWhiteSpace:($self peekChar)))
                 ? [ $self readChar. ].
-         
-            skipThis := false.   
-                    
-            (($self peekChar toInt) == LF) ?
+            
+            skipThis := false. 
+            iiii := iiii + 1. 
+                
+            (($self peekChar) == LF) ?
             [
-                #loop (($self peekChar toInt) == LF)?
+                #var brk := false.
+                #loop (($nil != ($self peekChar)) and: (brk != true))?
                 [
+                    (($self peekChar) == LF)? [ brk := true. ].
                     $self readChar.
                     lineNumber := lineNumber + 1.
                 ].
@@ -121,59 +148,70 @@
                 skipThis := true.
             ].
             
-            ((skipThis == false) and: (($self peekChar toInt) == 022h)) ? // 0x22 == '\"'
+            ((skipThis == false) and: ($nil != $self peekChar)) ? // 0x22 == '\"'
             [
-                #var auxTk := $self scanStringLiteral.
-                tokenList += (assembler'Token new &token:auxTk &tokenType:(assembler'TokenType StringLiteral)).
-                //tokenList += ($self scanStringLiteral).
-                skipThis := true.
+                (($self peekChar) == #22h)?
+                [
+                    #var auxTk := $self scanStringLiteral.
+                    tokenList += (assembler'Token new &token:auxTk &tokenType:(assembler'TokenType StringLiteral)).
+                    //tokenList += ($self scanStringLiteral).
+                    skipThis := true.
+                ].
             ].
             
-            ((skipThis == false) and: (($self peekChar toInt) == 03Bh)) ? // 0x3B == ';'
+            ((skipThis == false) and: ($nil != $self peekChar)) ? // 0x3B == ';'
             [
-                #loop (($self peekChar toInt) != LF) ? [ $self readChar. ]. 
-                skipThis := true.
+                (($self peekChar) == #3Bh)?
+                [
+                    #loop (($self peekChar toInt) != LF) ? [ $self readChar. ]. 
+                    skipThis := true.
+                ].
             ].
             
-            ((skipThis == false) and: ($isLetter:($self peekChar)) or: (($self peekChar toInt) == 2Eh)) ? // 0x2E == '.'
+            ((skipThis == false) and: ($nil != $self peekChar)) ? // 0x2E == '.'
             [
-                #var auxTk := $self scanIdentifier.
-                tokenList += (assembler'Token new &token:auxTk &tokenType:(assembler'TokenType Identifier)).
-                //tokenList += ($self scanIdentifier).
-                skipThis := true.
+                (($isLetter:($self peekChar)) or: (($self peekChar) == #2Eh))?
+                [
+                    #var auxTk := $self scanIdentifier.
+                    tokenList += (assembler'Token new &token:auxTk &tokenType:(assembler'TokenType Identifier)).
+                    //tokenList += ($self scanIdentifier).
+                    skipThis := true.
+                ].
             ].
             
             (skipThis == false) ?
             [
-                ($self peekChar literal) =>
-                    "%" ? [ 
+                ($self peekChar) =>
+                    #25h ? [ // '%'
                             #var auxTk := $self scanRegister.
                             tokenList += (assembler'Token new &token:auxTk &tokenType:(assembler'TokenType Register)).
                             //tokenList += ($self scanRegister). 
                           ]
-                    "@" ? [
+                    #40h ? [ // '@'
                             #var auxTk := $self scanIndirectRegister.
                             tokenList += (assembler'Token new &token:auxTk &tokenType:(assembler'TokenType IndirectRegister)).
                             //tokenList += ($self scanIndirectRegister). 
                           ]
-                    "," ? [ 
+                    #2Ch ? [ // ',' 
                             $self readChar. 
                             #var auxTk := assembler'Tokens'TokenComma new &line:lineNumber.
                             tokenList += (assembler'Token new &token:auxTk &tokenType:(assembler'TokenType Comma)).
                             //tokenList += (assembler'Tokens'TokenComma new &line:lineNumber). 
                           ]
-                    "#" ? [ 
+                    #23h ? [ // '#'
                             $self readChar. 
                             #var auxTk := assembler'Tokens'TokenHash new &line:lineNumber.
                             tokenList += (assembler'Token new &token:auxTk &tokenType:(assembler'TokenType Hash)).
                             //tokenList += (assembler'Tokens'TokenHash new &line:lineNumber).
                           ]
-                    ":" ? [
+                    #3Ah ? [ // ':'
                             $self readChar.
                             #var auxTk := assembler'Tokens'TokenColon new &line:lineNumber.
                             tokenList += (assembler'Token new &token:auxTk &tokenType:(assembler'TokenType Colon)).
                             //tokenList += (assembler'Tokens'TokenColon new &line:lineNumber). 
-                          ].
+                          ]
+                          ! [ 
+                          console writeLine:"aqui". ].                              
             ].
         ].
     ]
@@ -185,7 +223,7 @@
     
     #method peekChar : pos
     [
-        #var ret := -1.
+        #var ret := $nil.
         ((pos + position) < sourceFile length)
            ? [ ret := sourceFile@(pos + position) /*toInt*/. ].
         ^ret.
@@ -193,7 +231,7 @@
     
     #method readChar
     [
-        #var ret := -1.
+        #var ret := $nil.
         (position < sourceFile length)
             ? [ ret := sourceFile@(position). position := position + 1. ].
         ^ret.        
@@ -207,8 +245,10 @@
         #var v1 := $self peekChar:0.
         #var v2 := $self peekChar:1.
         
-        ((v1 literal == "0") and: (v2 literal == "x"))
-            ? [ ^($self scanHexNumber). ]
+        ((v1 == #30h) and: (v2 == #78h))
+            ? [ 
+            ^($self scanHexNumber).
+             ]
             ! [
                 #var accum := "".
                 accum := accum + ($self readChar) literal.
@@ -233,6 +273,7 @@
         [
             accum := accum + ($self readChar) literal.
         ].
+
         #var tmp := $htoi:accum.
         ^(assembler'Tokens'TokenIntLiteral new &value:(tmp toLong) &line:lineNumber).
     ]
@@ -241,7 +282,7 @@
     [
         $self readChar.
         #var accum := "".
-        #loop (($self peekChar toInt != 022h) and: ($self peekChar != -1)) ?
+        #loop (($self peekChar toInt != 022h) and: ($nil != $self peekChar)) ?
         [
             accum := accum + $self readChar.
         ].
@@ -265,7 +306,7 @@
         #var accum := "".
         
         #var auxChar := $nil.
-        #loop (($isLetterOrDigit:($self peekChar)) and: ($self peekChar != -1)) ?
+        #loop (($isLetterOrDigit:($self peekChar)) and: ($nil != $self peekChar)) ?
         [
             accum := accum + $self readChar.
         ].
@@ -277,11 +318,12 @@
         #var isDigit := true.
         #loop ((i < regNumber length) and: isDigit) ?
         [
-            isDigit := $isDigit:(regNumber@i).
+            isDigit := $isDigit:(regNumber@i).        
             i := i + 1.
         ].
         
-        #var register := (regNumber trimRight) toInt.        
+//        #var register := (regNumber /*trimRight*/) toInt.   
+        #var register := $converToInt:regNumber.
         #var tmpReg := (accum@0 literal) toLower &locale:currentLocale.
         (((tmpReg != "r") or: (tmpReg != "s") or: (tmpReg != "d") == false) or: (register > 15))
             ? [
@@ -302,7 +344,7 @@
         #var accum := "".
         
         #var auxChar := $nil.
-        #loop (($isLetterOrDigit:($self peekChar)) and: ($self peekChar != -1)) ?
+        #loop (($isLetterOrDigit:($self peekChar)) and: ($nil != $self peekChar)) ?
         [
             accum := accum + $self readChar.
         ].

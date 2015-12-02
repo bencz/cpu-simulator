@@ -4,6 +4,8 @@
 #import system'io.
 #import extensions.
 
+#import system'collections.
+
 #symbol program =
 [
     #var source := $nil.
