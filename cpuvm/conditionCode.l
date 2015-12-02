@@ -13,7 +13,7 @@
 #symbol(const,type:int)$C_LessThanOrEqual      = 10.
 #symbol(const,type:int)$C_Trap                 = 11.
 
-#class(extension) ConditionCode
+#symbol ConditionCode =
 {
     #method Always             = $C_Always.
     #method Sign               = $C_Sign.
@@ -27,4 +27,4 @@
     #method LessThan           = $C_LessThan.
     #method LessThanOrEqual    = $C_LessThanOrEqual.
     #method Trap               = $C_Trap.
-}
+}.

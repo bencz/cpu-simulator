@@ -37,12 +37,8 @@
     [
         instructions@00h := cpuvm'instructions'InstructionAddi new.
         instructions@80h := cpuvm'instructions'InstructionAdd new.
-//        instructions@81h := cpuvm'instructions'InstructionAdc new.
-//        instructions@82h := cpuvm'instructions'InstructionAddu new.
         instructions@83h := cpuvm'instructions'InstructionSub new.
         instructions@03h := cpuvm'instructions'InstructionSubi new.
-//        instructions@84h := cpuvm'instructions'InstructionSbc new.
-//        instructions@85h := cpuvm'instructions'InstructionSubu new.
         instructions@86h := cpuvm'instructions'InstructionMul new.
         instructions@88h := cpuvm'instructions'InstructionDiv new.
         instructions@59h := cpuvm'instructions'InstructionBr new.
