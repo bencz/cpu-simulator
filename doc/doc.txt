@@ -1,4 +1,23 @@
-Linguagem assembly do projeto "CPU-Simulator"
+======  Dados tecnicos da CPU ====== 
+Arquitetura: 32bits
+
+=-= Memoria =-= 
+Maximo de memoria endereçável: 4gb
+
+=-= Memoria virtual =-= 
+Cada parte do sistema é separado em blocos de memoria virtual
+Cada bloco possui o tamanho de 4096 bytes.
+Quando carregado os perifericos, é criado um bloco de memoria
+para cada periférico.
+
+=-= Registradores =-= 
+Todos os registradores possuem tamanho de 32bits.
+
+Intrução:
+<opcode><Operando, ...>
+
+
+====== Linguagem assembly do projeto "CPU-Simulator" ====== 
 
 Sintaxe basica:
 =-= Comentarios:
@@ -10,12 +29,25 @@ Sintaxe basica:
 Registradores:
 r0, r1, r2, r3, r4, r5, r6, r7, r8, r9, r10, r11, r12, r13, r14, r15
 
-Registradores de acesso da CPU
-r11 ( LR )     === Link register
-r12 ( FLAGS )  === Flags
-r13 ( BP )     === Base Pointer
-r14 ( SP )     === Stack Pointer
-r15 ( PC )     === Program Counter
+Registradores de uso geral:
+*r0
+*r1
+*r2
+*r3
+*r4
+*r5
+*r6
+*r7
+*r8
+*r9
+*r10 
+
+Registradores de acesso da CPU:
+*r11 ( LR )     === Link register
+*r12 ( FLAGS )  === Flags
+*r13 ( BP )     === Base Pointer
+*r14 ( SP )     === Stack Pointer
+*r15 ( PC )     === Program Counter
 
 Tipos de endereçamento:
 %r<N> === Acesso direto ao registrador
