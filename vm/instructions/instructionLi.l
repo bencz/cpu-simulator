@@ -5,7 +5,7 @@
 {
 	#constructor new []
 
-	#method interpret &ins:aInstruction &vm:aVm
+	#method interpret &ins:aInstruction &cpuvm:aVm
     [
         #var(type:byte) destRegister.
         #var(type:short) data.

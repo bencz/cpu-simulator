@@ -4,7 +4,7 @@
 {
     #constructor new []
 
-	#method interpret &ins:aInstruction &vm:aVm
+	#method interpret &ins:aInstruction &cpuvm:aVm
     [
         #var(type:byte) code.
         #var(type:short) jump.
@@ -18,35 +18,35 @@
         ip := ((ip + jump) and: 00FFFFh) int.
 
         (code int) =>
-            (vm'ConditionCode Carry)
-                ? [ shouldJump := ((flags and: (vm'Flags Carry)) != 0). ]
+            (cpuvm'ConditionCode Carry)
+                ? [ shouldJump := ((flags and: (cpuvm'Flags Carry)) != 0). ]
                 
-            (vm'ConditionCode Zero)
-                ? [ shouldJump := ((flags and: (vm'Flags Zero)) != 0). ]
+            (cpuvm'ConditionCode Zero)
+                ? [ shouldJump := ((flags and: (cpuvm'Flags Zero)) != 0). ]
                 
-            (vm'ConditionCode Equal)
-                ? [ shouldJump := ((flags and: (vm'Flags Zero)) != 0). ]
+            (cpuvm'ConditionCode Equal)
+                ? [ shouldJump := ((flags and: (cpuvm'Flags Zero)) != 0). ]
                 
-            (vm'ConditionCode NotEqual)
-                ? [ shouldJump := ((flags and: (vm'Flags Zero)) == 0). ]
+            (cpuvm'ConditionCode NotEqual)
+                ? [ shouldJump := ((flags and: (cpuvm'Flags Zero)) == 0). ]
                 
-            (vm'ConditionCode GreaterThan)
-                ? [ shouldJump := ((flags and: (vm'Flags Sign)) == 0). ]
+            (cpuvm'ConditionCode GreaterThan)
+                ? [ shouldJump := ((flags and: (cpuvm'Flags Sign)) == 0). ]
                 
-            (vm'ConditionCode GreaterThanOrEqual)
-                ? [ shouldJump := ((flags and: (vm'Flags Sign) == 0) or: (flags and: (vm'Flags Zero) != 0)). ]
+            (cpuvm'ConditionCode GreaterThanOrEqual)
+                ? [ shouldJump := ((flags and: (cpuvm'Flags Sign) == 0) or: (flags and: (cpuvm'Flags Zero) != 0)). ]
                 
-            (vm'ConditionCode Sign)
-                ? [ shouldJump := ((flags and: (vm'Flags Zero)) != 0). ]
+            (cpuvm'ConditionCode Sign)
+                ? [ shouldJump := ((flags and: (cpuvm'Flags Zero)) != 0). ]
                 
-            (vm'ConditionCode LessThan)
-                ? [ shouldJump := ((flags and: (vm'Flags Zero)) != 0). ]
+            (cpuvm'ConditionCode LessThan)
+                ? [ shouldJump := ((flags and: (cpuvm'Flags Zero)) != 0). ]
                 
-            (vm'ConditionCode LessThanOrEqual)
-                ? [ shouldJump := ((flags and: (vm'Flags Sign) != 0) or: (flags and: (vm'Flags Zero) == 0)). ]
+            (cpuvm'ConditionCode LessThanOrEqual)
+                ? [ shouldJump := ((flags and: (cpuvm'Flags Sign) != 0) or: (flags and: (cpuvm'Flags Zero) == 0)). ]
                 
-            (vm'ConditionCode Overflow)
-                ? [ shouldJump := ((flags and: (vm'Flags Overflow)) != 0). ]
+            (cpuvm'ConditionCode Overflow)
+                ? [ shouldJump := ((flags and: (cpuvm'Flags Overflow)) != 0). ]
                 
             ! [ shouldJump := true. ].
             

@@ -1,4 +1,5 @@
 #import system.
+#import system'io.
 #import system'routines.
 #import system'collections.
 #import extensions.
@@ -16,10 +17,11 @@
     #field speed.
     #field instructions.
     #field controlRegister.
+    #field currentInstruction.
     
     #constructor new
     [
-        physicalMemory := vm'MemoryPhysical new.
+        physicalMemory := cpuvm'MemoryPhysical new.
         instructions := Dictionary new.
         registersUser := IntArray new &int:16.
         registersSupervisor := IntArray new &int:16.
@@ -33,33 +35,29 @@
     
     #method setOpcodes
     [
-        instructions@00h := vm'instructions'InstructionAddi new.
-        instructions@80h := vm'instructions'InstructionAdd new.
-//        instructions@81h := vm'instructions'InstructionAdc new.
-//        instructions@82h := vm'instructions'InstructionAddu new.
-        instructions@83h := vm'instructions'InstructionSub new.
-        instructions@03h := vm'instructions'InstructionSubi new.
-//        instructions@84h := vm'instructions'InstructionSbc new.
-//        instructions@85h := vm'instructions'InstructionSubu new.
-        instructions@86h := vm'instructions'InstructionMul new.
-        instructions@88h := vm'instructions'InstructionDiv new.
-        instructions@59h := vm'instructions'InstructionBr new.
-        instructions@5Ah := vm'instructions'InstructionBl new.
-        instructions@91h := vm'instructions'InstructionOr new.
-        instructions@14h := vm'instructions'InstructionLi new.
-        instructions@15h := vm'instructions'InstructionLb new.
-        instructions@16h := vm'instructions'InstructionLw new.
-        instructions@17h := vm'instructions'InstructionSb new.
-        instructions@18h := vm'instructions'InstructionSw new.
-        instructions@9Bh := vm'instructions'InstructionCmp new.
-        instructions@1Bh := vm'instructions'InstructionCmpi new.
-        instructions@21h := vm'instructions'InstructionPush new.
-        instructions@22h := vm'instructions'InstructionPop new.
-        instructions@0Eh := vm'instructions'InstructionSli new.
-        instructions@0Fh := vm'instructions'InstructionSri new.
+        instructions@00h := cpuvm'instructions'InstructionAddi new.
+        instructions@80h := cpuvm'instructions'InstructionAdd new.
+        instructions@83h := cpuvm'instructions'InstructionSub new.
+        instructions@03h := cpuvm'instructions'InstructionSubi new.
+        instructions@86h := cpuvm'instructions'InstructionMul new.
+        instructions@88h := cpuvm'instructions'InstructionDiv new.
+        instructions@59h := cpuvm'instructions'InstructionBr new.
+        instructions@5Ah := cpuvm'instructions'InstructionBl new.
+        instructions@91h := cpuvm'instructions'InstructionOr new.
+        instructions@14h := cpuvm'instructions'InstructionLi new.
+        instructions@15h := cpuvm'instructions'InstructionLb new.
+        instructions@16h := cpuvm'instructions'InstructionLw new.
+        instructions@17h := cpuvm'instructions'InstructionSb new.
+        instructions@18h := cpuvm'instructions'InstructionSw new.
+        instructions@9Bh := cpuvm'instructions'InstructionCmp new.
+        instructions@1Bh := cpuvm'instructions'InstructionCmpi new.
+        instructions@21h := cpuvm'instructions'InstructionPush new.
+        instructions@22h := cpuvm'instructions'InstructionPop new.
+        instructions@0Eh := cpuvm'instructions'InstructionSli new.
+        instructions@0Fh := cpuvm'instructions'InstructionSri new.
     ]
     
-    #method loadProgram : aProgram
+    #method loadProgram &dataBytes:aProgram
     [
         #var i := 0.
         #loop (i < aProgram length) ?
@@ -67,6 +65,20 @@
             physicalMemory writeByte &address:i &byt:(aProgram@i). 
             i := i + 1.
         ].
+    ]
+    
+    #method loadProgram &fileName:aFileName
+    [
+        #var(type:vbyte) byte := 0.
+        #var br := BinaryFileReader new &path:aFileName.   
+        #var i := 0.
+        #loop (br available) ?
+        [
+            br read &vbyte:byte.
+            physicalMemory writeByte &address:i &byt:(byte). 
+            i := i + 1.
+        ].
+        br close.  
     ]
     
     #method setRegister &register:aRegister &value:aValue
@@ -83,6 +95,12 @@
             ! [ ^registersUser@aRegister. ].
     ]
     
+    #method doStep
+    [
+        currentInstruction := $self fetchInstruction.
+        halted := $self decodeInstruction:(currentInstruction) not. 
+    ]
+    
     #method emulate
     [
         #loop (halted != true) ?
@@ -94,14 +112,14 @@
     #method cpuTick
     [
         #var i := 0.
-        #var instruction := -1.
+        //#var instruction := -1.
         #loop ((i < (speed / 100)) and: (halted != true))?
         [
-            instruction := $self fetchInstruction.
-            #var uu := (i literal) padLeft &char:(CharValue new &char:#48) &int:4.
-            console writeLine:(uu + " ---- " + (instruction toLiteral &base:16) + " ---- " + ($self getRegister:15) toLiteral &base:16).
-            halted := $self decodeInstruction:instruction not.
-            //halted := $self decodeInstruction:($self fetchInstruction) not.
+            //instruction := $self fetchInstruction.
+            //#var uu := (i literal) padLeft &char:(CharValue new &char:#48) &int:4.
+            //console writeLine:(uu + " ---- " + (instruction toLiteral &base:16) + " ---- " + ($self getRegister:15) toLiteral &base:16).
+            //halted := $self decodeInstruction:instruction not.
+            halted := $self decodeInstruction:($self fetchInstruction) not.
             i := i + 1.
         ].
     ]
@@ -123,7 +141,7 @@
         #var inst := instructions@opcode.
         ($nil != inst)?
             [ 
-                inst interpret &ins:instruction &vm:($self).
+                inst interpret &ins:instruction &cpuvm:($self).
                 lRet := true.
             ].
         ^lRet.
@@ -142,4 +160,11 @@
     
     #method getMemory = physicalMemory.
     #method controlRegister = controlRegister.
+    
+    #method Halted = halted.
+    #method Halted:aValue [ halted := aValue. ]
+    
+    #method Speed = speed.
+    
+    #method CurrentInstruction = currentInstruction.
 }

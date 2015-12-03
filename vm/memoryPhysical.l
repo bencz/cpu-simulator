@@ -29,7 +29,7 @@
         #var block := aAddress and: 0FFFFF000h.
         #var blk := allocatedMemory@block.
         ($nil == blk) 
-            ? [ allocatedMemory@block := vm'MemoryBlock new. ].
+            ? [ allocatedMemory@block := cpuvm'MemoryBlock new. ].
         (allocatedMemory@block)@aAddress := aByte.
     ]
     

@@ -1,14 +1,14 @@
 #import system.
 
-#symbol(const,type:int)$Sign     = 001h.
-#symbol(const,type:int)$Zero     = 002h.
-#symbol(const,type:int)$Carry    = 004h.
-#symbol(const,type:int)$Overflow = 008h.
+#symbol(const,type:int)$F_Sign     = 001h.
+#symbol(const,type:int)$F_Zero     = 002h.
+#symbol(const,type:int)$F_Carry    = 004h.
+#symbol(const,type:int)$F_Overflow = 008h.
 
-#class(extension) Flags
+#symbol Flags = 
 {
-    #method Sign = $Sign.
-    #method Zero = $Zero.
-    #method Carry = $Carry.
-    #method Overflow = $Overflow.
-}
+    #method Sign = $F_Sign.
+    #method Zero = $F_Zero.
+    #method Carry = $F_Carry.
+    #method Overflow = $F_Overflow.
+}.

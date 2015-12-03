@@ -4,7 +4,7 @@
 {
 	#constructor new []
 
-	#method interpret &ins:aInstruction &vm:aVm
+	#method interpret &ins:aInstruction &cpuvm:aVm
     [
         #var(type:short) registersList.
         registersList := ((aInstruction shift &index:16) and: 0FFFFh).
@@ -14,14 +14,14 @@
         [
             (((2 shift &index: (i * -1)) and: registersList) != 0)?
                 [
-                    #var popedValue := $self pop &vm:aVm.
+                    #var popedValue := $self pop &cpuvm:aVm.
                     aVm setRegister &register:i &value:popedValue.
                 ]. 
             i := i - 1.
         ].
     ]
     
-    #method pop &vm:aVm
+    #method pop &cpuvm:aVm
     [
         #var sp := aVm getRegister:14.
         aVm setRegister &register:14 &value:(sp + 4).        

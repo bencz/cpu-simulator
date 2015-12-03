@@ -4,7 +4,7 @@
 {
 	#constructor new []
 
-	#method interpret &ins:aInstruction &vm:aVm
+	#method interpret &ins:aInstruction &cpuvm:aVm
     [
         #var(type:byte)destinationRegister.
         #var(type:byte)sourceRegister.

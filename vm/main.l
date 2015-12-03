@@ -18,7 +18,7 @@
 
 #symbol program =
 [      
-    #var cpu := vm'Cpu new.
+    #var cpu := cpuvm'Cpu new.
     cpu loadProgram : ($loadBytes:"test.bin").
     cpu emulate.
 ].

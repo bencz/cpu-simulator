@@ -4,7 +4,7 @@
 {
 	#constructor new []
 
-	#method interpret &ins:aInstruction &vm:aVm
+	#method interpret &ins:aInstruction &cpuvm:aVm
     [
         #var(type:bytearray,size:8)dump.
         #var(type:byte)register1.
@@ -20,13 +20,13 @@
         #var flags := aVm getRegister:12.
         #var result := op1 + op2.
         
-        flags := flags and: (vm'Flags Carry not).
-        flags := flags and: (vm'Flags Overflow not).
-        flags := flags and: (vm'Flags Sign not).
+        flags := flags and: (cpuvm'Flags Carry not).
+        flags := flags and: (cpuvm'Flags Overflow not).
+        flags := flags and: (cpuvm'Flags Sign not).
         
         (result == 0)
-            ? [ flags := flags or: (vm'Flags Zero). ]
-            ! [ flags := flags and: ((vm'Flags Zero) not). ].
+            ? [ flags := flags or: (cpuvm'Flags Zero). ]
+            ! [ flags := flags and: ((cpuvm'Flags Zero) not). ].
             
         aVm setRegister &register:destRegister &value:result.
         aVm setRegister &register:12 &value:flags.   

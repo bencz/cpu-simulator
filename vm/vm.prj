@@ -1,4 +1,4 @@
-﻿[project]
+[project]
 executable=vm.exe
 output=obj
 namespace=vm
@@ -40,4 +40,5 @@ flags.l
 conditionCode.l
 instructions\instructionXor.l
 instructions\instructionXori.l
+disassembler.l
 
