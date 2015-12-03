@@ -1,5 +1,5 @@
-﻿[project]
-executable=dbg.exe
+[project]
+executable=..\bin\dbg.exe
 output=obj
 namespace=dbg
 template=gui

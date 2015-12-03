@@ -1,5 +1,5 @@
-﻿[project]
-executable=assembler.exe
+[project]
+executable=..\bin\assembler.exe
 arguments=-o out.bin test1.asm
 output=obj
 namespace=assembler
